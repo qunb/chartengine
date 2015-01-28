@@ -1,0 +1,172 @@
+<!DOCTYPE  html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>doc</title>
+    <style>
+      /*github.com style (c) Vasily Polovnyov <vast@whiteants.net>*/
+      pre code {
+        display: block; padding: 0.5em;
+        color: #333;
+        background: #f8f8ff
+      }
+      pre .comment,
+      pre .template_comment,
+      pre .diff .header,
+      pre .javadoc {
+        color: #998;
+        font-style: italic
+      }
+      pre .keyword,
+      pre .css .rule .keyword,
+      pre .winutils,
+      pre .javascript .title,
+      pre .nginx .title,
+      pre .subst,
+      pre .request,
+      pre .status {
+        color: #333;
+        font-weight: bold
+      }
+      pre .number,
+      pre .hexcolor,
+      pre .ruby .constant {
+        color: #099;
+      }
+      pre .string,
+      pre .tag .value,
+      pre .phpdoc,
+      pre .tex .formula {
+        color: #d14
+      }
+      pre .title,
+      pre .id {
+        color: #900;
+        font-weight: bold
+      }
+      pre .javascript .title,
+      pre .lisp .title,
+      pre .clojure .title,
+      pre .subst {
+        font-weight: normal
+      }
+      pre .class .title,
+      pre .haskell .type,
+      pre .vhdl .literal,
+      pre .tex .command {
+        color: #458;
+        font-weight: bold
+      }
+      pre .tag,
+      pre .tag .title,
+      pre .rules .property,
+      pre .django .tag .keyword {
+        color: #000080;
+        font-weight: normal
+      }
+      pre .attribute,
+      pre .variable,
+      pre .lisp .body {
+        color: #008080
+      }
+      pre .regexp {
+        color: #009926
+      }
+      pre .class {
+        color: #458;
+        font-weight: bold
+      }
+      pre .symbol,
+      pre .ruby .symbol .string,
+      pre .lisp .keyword,
+      pre .tex .special,
+      pre .prompt {
+        color: #990073
+      }
+      pre .built_in,
+      pre .lisp .title,
+      pre .clojure .built_in {
+        color: #0086b3
+      }
+      pre .preprocessor,
+      pre .pi,
+      pre .doctype,
+      pre .shebang,
+      pre .cdata {
+        color: #999;
+        font-weight: bold
+      }
+      pre .deletion {
+        background: #fdd
+      }
+      pre .addition {
+        background: #dfd
+      }
+      pre .diff .change {
+        background: #0086b3
+      }
+      pre .chunk {
+        color: #aaa
+      }
+    </style>
+  </head>
+  <body>  
+    <h1 id="qunb-chart-engine-2014">qunb chart engine 2014</h1>
+<blockquote>
+<p>Using <a href="http://d3js.org">d3js</a> &amp; co</p>
+</blockquote>
+<p>This chart engine currently works with raw data  as inputs, and &#39;cube charts&#39; that you can find in the [qube][] repository.</p>
+<h2 id="installation">Installation</h2>
+<p>If you haven&#39;t already done so, install <a href="http://nodejs.org">nodejs</a>, <a href="http://gruntjs.com">gruntjs</a> and <a href="https://github.com/bower/bower">bowerjs</a>.</p>
+<pre><code>npm install
+grunt install</code></pre>
+<h2 id="build">Build</h2>
+<pre><code>grunt dispatch</code></pre>
+<h2 id="using-it-as-a-dependency">Using it as a dependency</h2>
+<p>This is a development repository. To use it as a dependency, 
+please add this bower.json dependency line to your project :</p>
+<pre><code>    &quot;qube&quot;: &quot;git@github.com:qunb/chartlabs.git&quot;,</code></pre>
+<p>You then need to compile it, e.g. using a grunt shell task : </p>
+<pre><code>
+shell: {
+      buildChartEngine: {
+        command: [
+          &#39;cd app/bower_components/chartlabs/app/chartengine&#39;, // Or your custom bower components directory
+          &#39;grunt dispatch&#39;
+        ].join(&#39;&amp;&amp;&#39;)
+      },
+    },</code></pre>
+<p>Finally, import the just compiled files build/ChartEngine.js and build/css/charts.css</p>
+<p>Important : At the moment, Chart Engine needs an underscore-compatible version of lodash, and jQuery.</p>
+<p>If using requirejs to manage client dependencies, use this kind of config : 
+require.config({
+  paths: {
+    ChartEngine: &#39;../bower_components/chart-engine/build/ChartEngine&#39;,
+    lodash: &#39;../bower_components/lodash/dist/lodash.underscore&#39;,
+    jquery: &#39;../bower_components/jquery/jquery&#39;,
+  },
+  shim: {
+    &#39;ChartEngine&#39;: {
+      deps: [&#39;lodash&#39;, &#39;jquery&#39;],
+      exports: &#39;ChartEngine&#39;
+    },
+  },
+});</p>
+<hr>
+<h1 id="usage">Usage</h1>
+<pre><code>  var options: {
+    anchor: &#39;#id&#39;,
+    type: &#39;PieBarChart&#39;,
+    duration: 500,
+    ...
+  };
+
+  var chart = ChartEngine.create(options);
+  chart.draw(data);
+  chart.remove();</code></pre>
+<hr>
+<h1 id="contribute">Contribute</h1>
+
+  </body>
+</html>
