@@ -123,18 +123,37 @@ var AbstractChart = d3.chart("AbstractChart", {
 
     initSize: function() {
         var chart = this;
+            anchorId = chart.params.anchorId;
+
+        var canvas = d3.select(anchorId+' canvas');
+
         // If auto: take the size of anchorId
-        if (chart.params.size == "auto" && chart.params.anchorId) {
-            chart.width(d3.select(chart.params.anchorId).style("width"));
-            chart.height(d3.select(chart.params.anchorId).style("height"));
+        if (chart.params.size == "auto" && anchorId) {
+            canvas.style({
+                width: d3.select(anchorId).style("width"),
+                height: d3.select(anchorId).style("height")
+            });
+
+            chart.width(d3.select(anchorId).style("width"));
+            chart.height(d3.select(anchorId).style("height"));
         }
         // If predefined size
         else if (chart.params.size.width && chart.params.size.height) {
+            canvas.style({
+                width: chart.params.size.width,
+                height: chart.params.size.height
+            });
+
             chart.width(chart.params.size.width);
             chart.height(chart.params.size.height);
         }
         // Default values
         else  {
+            canvas.style({
+                width: defaultWidth,
+                height: defaultHeight
+            });
+            
             chart.width(defaultWidth);
             chart.height(defaultHeight);
         }

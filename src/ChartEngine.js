@@ -33,9 +33,15 @@ Creates a new chart
 ChartEngine.create({anchorId: "#myChartContainer", chartType: "PieBarChart", width: 950, height: 400})
 */
 ChartEngine.create = function(params) {
-	return d3
-		.select(params.anchorId)
-		.append('svg')
+	var d3Dom = d3.select(params.anchorId);
+	
+	d3Dom.append('canvas').style({
+		position: 'absolute',
+		top: d3Dom.offsetTop + 'px',
+		left: d3Dom.offsetLeft + 'px'
+	}).classed(params.chartType+'Canvas', true);
+
+	return d3Dom.append('svg')
 		.classed(params.chartType, true)
 		.chart(params.chartType, params);
 };
