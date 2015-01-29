@@ -140,7 +140,8 @@ module.exports = {
 			jsSchema: path.join(__dirname, './libs/bower_components/js-schema/js-schema.debug'),
 			faker: path.join(__dirname, './libs/bower_components/faker/dist/faker'),
 			chance: path.join(__dirname, './libs/bower_components/chance/chance'),
-			numeral: path.join(__dirname, './libs/bower_components/numeral/numeral')
+			numeral: path.join(__dirname, './libs/bower_components/numeral/numeral'),
+			paperjs: path.join(__dirname, './libs/bower_components/paperjs/paper-full')
 		}
 	},
 

@@ -57,6 +57,4 @@ d3.selection.prototype.fillRect = function(container, margin){
 	}
 }
 
-
-
 module.exports = d3;

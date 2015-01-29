@@ -12,6 +12,9 @@ require('d3extended');
 // Import style
 require('allStyle');
 
+// Import paper
+//require('paperjs');
+
 // Import infographies and charts
 require('MarimekkoChart');
 require('PieBarEvol');
