@@ -13,7 +13,7 @@ require('d3extended');
 require('allStyle');
 
 // Import paper
-//require('paperjs');
+var paper = require('paperjs');
 
 // Import infographies and charts
 require('MarimekkoChart');
@@ -22,6 +22,7 @@ require('IconChart');
 require('PieChart');
 require('HorizontalBarChart');
 require('BigTextChart');
+require('VerticalAvgBarChart');
 
 var ChartEngine = {};
 
@@ -35,11 +36,13 @@ ChartEngine.create({anchorId: "#myChartContainer", chartType: "PieBarChart", wid
 ChartEngine.create = function(params) {
 	var d3Dom = d3.select(params.anchorId);
 	
-	d3Dom.append('canvas').style({
+	var canvas = d3Dom.append('canvas').style({
 		position: 'absolute',
 		top: d3Dom.offsetTop + 'px',
 		left: d3Dom.offsetLeft + 'px'
 	}).classed(params.chartType+'Canvas', true);
+
+	//paper.setup(canvas.node());
 
 	return d3Dom.append('svg')
 		.classed(params.chartType, true)

@@ -5,6 +5,9 @@ Provides generic behavior for chart objects
 @class AbstractChart
 @abstract
 */
+
+var paper = require('paperjs');
+
 require('script!modernizr');
 var ModelSchemas = require('ModelSchemas');
 var Exceptions = require('Exceptions');
@@ -153,10 +156,12 @@ var AbstractChart = d3.chart("AbstractChart", {
                 width: defaultWidth,
                 height: defaultHeight
             });
-            
+
             chart.width(defaultWidth);
             chart.height(defaultHeight);
         }
+
+        paper.setup(canvas.node());
     },
 
     initDefs: function() {

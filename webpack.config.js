@@ -34,6 +34,7 @@ module.exports = {
 	resolve: {
 		modulesDirectories: ['node_modules', 'bower_components'],
 		alias: {
+			// TODO rework this list
 
 			// Style
 			allStyle: path.join(__dirname, './style/all-source.scss'),
@@ -58,6 +59,7 @@ module.exports = {
 			PeopleMobileChart: path.join(__dirname, './src/graph/chart/people/peopleMobileChart'),
 			IconChart: path.join(__dirname, './src/graph/chart/icon/iconChart'),
 			BigTextChart: path.join(__dirname, './src/graph/textbloc/bigtext/bigTextChart'),
+			VerticalAvgBarChart: path.join(__dirname, './src/graph/chart/bar/verticalAvgBarChart'),
 
 			//Axis
 			TimeAxisChart: path.join(__dirname, './src/graph/chart/axis/timeAxisChart'),
@@ -78,6 +80,8 @@ module.exports = {
 			PieCenterLayer: path.join(__dirname, './src/layer/datavis/pie/pieCenterLayer'),
 			BarRectangleLayer: path.join(__dirname, './src/layer/datavis/bar/barRectangleLayer'),
 			BarLabelLayer: path.join(__dirname, './src/layer/datavis/bar/barLabelLayer'),
+			CanvasBarRectangleLayer: path.join(__dirname, './src/layer/datavis/bar/canvasBarRectangleLayer'),
+			CanvasAvgLineLayer : path.join(__dirname, './src/layer/datavis/line/canvasAvgLineLayer'),
 			PeopleMobileLayer: path.join(__dirname, './src/layer/datavis/icon/people/peopleMobileLayer'),
 			ScreenLabelsLayer: path.join(__dirname, './src/layer/datavis/icon/screen/screenLabelsLayer'),
 			ScreenShapeLayer: path.join(__dirname, './src/layer/datavis/icon/screen/screenShapeLayer'),

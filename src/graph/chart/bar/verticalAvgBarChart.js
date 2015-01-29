@@ -5,15 +5,12 @@ Provides a base for a horizontal bar chart
 @class HorizontalBarChart
 */
 
-console.log('VERTICAL AVG BAR');
-
 var AbstractChart = require('AbstractChart');
 var Formatter = require('Formatter');
 
 var BarAdapter = require('BarAdapter');
 
-var BarRectangleLayer = require('BarRectangleLayer');
-var BarLabelLayer = require('BarLabelLayer');
+var CanvasBarRectangleLayer = require('CanvasBarRectangleLayer');
 
 var OrdinalAxisChart = require('OrdinalAxisChart');
 var QuantitativeAxisChart = require('QuantitativeAxisChart');
@@ -21,42 +18,27 @@ var QuantitativeAxisChart = require('QuantitativeAxisChart');
 var ordinalScale = d3.scale.ordinal();
 var linearScale = d3.scale.linear();
 
-var VerticalBarChart = d3.chart("AbstractChart").extend("VerticalBarChart", {
+var VerticalAvgBarChart = d3.chart("AbstractChart").extend("VerticalAvgBarChart", {
 
     zones: {
         ordinalXAxis: {
             type: 'OrdinalAxisChart',
-            attach: 'ordinalYAxis',
+            //type:'QuantitativeAxisChart',
+            attach: 'ordinalXAxis',
+            //attach:'linearXAxis',
             scale: ordinalScale,
             formatter: 'ShortValueFormatter',
-            orientation: 'left',
-            width: {
-                start: 0,
-                end: .2
-            },
-            height: {
-                start: .1,
-                end: .9
-            },
-            isAxis: true,
-            grid: true
-        },
-        linearYAxis: {
-            type: 'QuantitativeAxisChart',
-            attach: 'linearXAxis',
+            orientation: 'top',
             width: {
                 start: .2,
-                end: 1
+                end: .8
             },
             height: {
-                start: .9,
-                end: 1
+                start: .2,
+                end: .8
             },
-            scale: linearScale,
-            grid: true,
-            isAxis: true,
-            formatter: 'ValueFormatter',
-            orientation: 'bottom'
+            //isAxis: true,
+            //grid: true
         }
     },
 
@@ -64,54 +46,78 @@ var VerticalBarChart = d3.chart("AbstractChart").extend("VerticalBarChart", {
         var chart = this;
         this.base.classed('barChart', true);
 
-        this.tip = d3.tip()
-            .attr('class', 'd3-tip')
-            .attr('id', 'horizontalBarChartTooltip-' + chart.params.attach || chart.params.anchorId)
-            .html(function(point) {
-                return point.name + ': ' + Formatter.format(point.value, 'ShortValueFormatter');
-            })
-            .offset([-12, 0]);
-        this.base.call(this.tip);
+        // this.tip = d3.tip()
+        //     .attr('class', 'd3-tip')
+        //     .attr('id', 'horizontalBarChartTooltip-' + chart.params.attach || chart.params.anchorId)
+        //     .html(function(point) {
+        //         return point.name + ': ' + Formatter.format(point.value, 'ShortValueFormatter');
+        //     })
+        //     .offset([-12, 0]);
+        // this.base.call(this.tip);
 
         // Scale generators
-        this.xscale = linearScale;
-        var changeLinearXscaleRange = function() {
-            chart.xscale.range([chart.width() * chart.zones.linearXAxis.width.start, chart.width() * chart.zones.linearXAxis.width.end]);
+        this.xscale = ordinalScale;
+        var changeOrdinalXscaleRange = function() {
+            chart.xscale.rangeRoundBands([chart.width() * chart.zones.ordinalXAxis.width.end, chart.width()], .33, .25);
         };
-        chart.on('change:width', changeLinearXscaleRange);
-        changeLinearXscaleRange();
+        chart.on('change:width', changeOrdinalXscaleRange);
+        changeOrdinalXscaleRange();
 
-        this.yscale = ordinalScale;
+        this.yscale = linearScale;
         var changeLinearYscaleRange = function() {
-            chart.yscale.rangeRoundBands([chart.height() * chart.zones.ordinalYAxis.height.end, chart.height() * chart.zones.ordinalYAxis.height.start], .35, .35);
+            chart.yscale.range([chart.height() * chart.zones.ordinalXAxis.height.end, chart.height() * chart.zones.ordinalXAxis.height.start]);
         };
         chart.on('change:height', changeLinearYscaleRange);
         changeLinearYscaleRange();
 
-        this.barRectangleLayer = this.base.append('g').classed('barRectangleLayer', true);
-        this.barRectangleLayerInstance = this.layer('barRectangleLayer', this.barRectangleLayer, BarRectangleLayer);
+        this.canvasBarRectangleLayer = this.base.append('custom:sketch').classed('barRectangleLayer', true);
+        this.canvasBarRectangleLayerInstance = this.layer('canvasBarRectangleLayer', this.canvasBarRectangleLayer, CanvasBarRectangleLayer);
+
+        //this.barLabelLayer = this.base.append('g').classed('barLabelLayer', true)
+        //this.barLabelLayerInstance = this.layer('barLabelLayer', this.barLabelLayer, BarLabelLayer);
     },
 
     transform: function(data) {
         this.data = data;
-        BarAdapter.computeLines(data);
-        this.xscale.domain(d3.extent(data.points, function(point) {
+        data = this.colorManager.attributesColors(data);
+        data = BarAdapter.computeLines(data);
+        /* X axis domain
+        - Always start at 0 when all values are of the same sign
+        - A padding of 1/10 the scale is added on both ends (it's visually better)
+        */
+        var extent = d3.extent(data.points, function(point) {
             return point.value;
-        }));
-        this.yscale.domain(_.pluck(data.points, function(point) {
+        })
+
+        var distance = extent[1] - extent[0]
+        if (extent[0] >= 0) {
+            extent[0] = 0
+        } else {
+            extent[0] = extent[0] - distance / 10
+        }
+        if (extent[1] <= 0) {
+            extent[1] = 0
+        } else {
+            extent[1] = extent[1] + distance / 10
+        }
+
+        this.xscale.domain(_.pluck(data.points, function(point){
             return point.id;
         }));
+
+        this.yscale.domain(extent);
+
         return data.points;
     },
 
     overEvent: function(params) {
-        this.barRectangleLayerInstance.over(params);
+        //this.barRectangleLayerInstance.over(params);
     },
 
     outEvent: function(params) {
-        this.barRectangleLayerInstance.out(params);
+        //this.barRectangleLayerInstance.out(params);
     }
 
 });
 
-module.exports = VerticalBarChart;
+module.exports = VerticalAvgBarChart;
