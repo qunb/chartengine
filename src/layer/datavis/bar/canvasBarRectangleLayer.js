@@ -64,20 +64,20 @@ var CanvasBarRectangleLayer = {
 			return this;
 		},
 
-		merge: function(a, b, c) {
+		merge: function() {
 			var chart = this.chart(),
 				height = chart.zones.ordinalXAxis.height;
 			this.each(function(point){
 				var rectangle = new paper.Rectangle( 
 					new paper.Point(chart.xscale(point.id), chart.yscale(0)), 
-					new paper.Point(chart.xscale(point.id)+10, chart.yscale(point.value))
+					new paper.Point(chart.xscale(point.id) + chart.xscale.rangeBand(), chart.yscale(point.value))
 				);
 				var barPath = new paper.Path.Rectangle(rectangle);
 				barPath.fillColor = '#999999';//point.color;
 
 				//barPaths.push(barPath);
 
-				console.log(rectangle);
+				console.log(point, rectangle);
 			});
 
 

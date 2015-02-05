@@ -12,8 +12,8 @@ var BarAdapter = require('BarAdapter');
 
 var CanvasBarRectangleLayer = require('CanvasBarRectangleLayer');
 
-var OrdinalAxisChart = require('OrdinalAxisChart');
-var QuantitativeAxisChart = require('QuantitativeAxisChart');
+//var OrdinalAxisChart = require('OrdinalAxisChart');
+//var QuantitativeAxisChart = require('QuantitativeAxisChart');
 
 var ordinalScale = d3.scale.ordinal();
 var linearScale = d3.scale.linear();
@@ -24,7 +24,7 @@ var VerticalAvgBarChart = d3.chart("AbstractChart").extend("VerticalAvgBarChart"
         ordinalXAxis: {
             type: 'OrdinalAxisChart',
             //type:'QuantitativeAxisChart',
-            attach: 'ordinalXAxis',
+            //attach: 'ordinalXAxis',
             //attach:'linearXAxis',
             scale: ordinalScale,
             formatter: 'ShortValueFormatter',
@@ -58,16 +58,16 @@ var VerticalAvgBarChart = d3.chart("AbstractChart").extend("VerticalAvgBarChart"
         // Scale generators
         this.xscale = ordinalScale;
         var changeOrdinalXscaleRange = function() {
-            chart.xscale.rangeRoundBands([chart.width() * chart.zones.ordinalXAxis.width.end, chart.width()], .33, .25);
+            chart.xscale.rangeRoundBands([chart.width() * chart.zones.ordinalXAxis.width.start, chart.width() * chart.zones.ordinalXAxis.width.end], .33, .25);
         };
-        chart.on('change:width', changeOrdinalXscaleRange);
+        //chart.on('change:width', changeOrdinalXscaleRange);
         changeOrdinalXscaleRange();
 
         this.yscale = linearScale;
         var changeLinearYscaleRange = function() {
             chart.yscale.range([chart.height() * chart.zones.ordinalXAxis.height.end, chart.height() * chart.zones.ordinalXAxis.height.start]);
         };
-        chart.on('change:height', changeLinearYscaleRange);
+        //chart.on('change:height', changeLinearYscaleRange);
         changeLinearYscaleRange();
 
         this.canvasBarRectangleLayer = this.base.append('custom:sketch').classed('barRectangleLayer', true);
@@ -78,28 +78,29 @@ var VerticalAvgBarChart = d3.chart("AbstractChart").extend("VerticalAvgBarChart"
     },
 
     transform: function(data) {
+        var chart = this;
+
         this.data = data;
         data = this.colorManager.attributesColors(data);
         data = BarAdapter.computeLines(data);
-        /* X axis domain
-        - Always start at 0 when all values are of the same sign
-        - A padding of 1/10 the scale is added on both ends (it's visually better)
-        */
+
+        console.log(data.points);
+
         var extent = d3.extent(data.points, function(point) {
             return point.value;
         })
 
-        var distance = extent[1] - extent[0]
-        if (extent[0] >= 0) {
-            extent[0] = 0
-        } else {
-            extent[0] = extent[0] - distance / 10
-        }
-        if (extent[1] <= 0) {
-            extent[1] = 0
-        } else {
-            extent[1] = extent[1] + distance / 10
-        }
+        // var distance = extent[1] - extent[0]
+        // if (extent[0] >= 0) {
+        //     extent[0] = 0
+        // } else {
+        //     extent[0] = extent[0] - distance / 10
+        // }
+        // if (extent[1] <= 0) {
+        //     extent[1] = 0
+        // } else {
+        //     extent[1] = extent[1] + distance / 10
+        // }
 
         this.xscale.domain(_.pluck(data.points, function(point){
             return point.id;

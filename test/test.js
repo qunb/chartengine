@@ -85,19 +85,19 @@ var dataset = {
 		name: 'Ventes',
 		points: [{
 			value: 603,
-			id: '1'
+			id: 'Sep-14'
 		},
 		{
 			value: 1076,
-			id: '2'
+			id: 'Oct-14'
 		},
 		{
 			value: 2907,
-			id: '3'
+			id: 'Nov-14'
 		},
 		{
 			value: 4459,
-			id: '4'
+			id: 'Dec-14'
 		}]
 	}, {
 		id: 'dates',
