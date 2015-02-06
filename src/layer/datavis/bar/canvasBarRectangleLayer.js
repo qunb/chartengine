@@ -65,19 +65,43 @@ var CanvasBarRectangleLayer = {
 		},
 
 		merge: function() {
-			var chart = this.chart(),
-				height = chart.zones.ordinalXAxis.height;
+			var chart = this.chart();
+			var zoneX = chart.getZoneX('ordinalXAxis');
+
 			this.each(function(point){
-				var rectangle = new paper.Rectangle( 
-					new paper.Point(chart.xscale(point.id), chart.yscale(0)), 
-					new paper.Point(chart.xscale(point.id) + chart.xscale.rangeBand(), chart.yscale(point.value))
-				);
-				var barPath = new paper.Path.Rectangle(rectangle);
-				barPath.fillColor = '#999999';//point.color;
 
-				//barPaths.push(barPath);
+				new paper.Path.Rectangle({
+					rectangle : new paper.Rectangle( 
+							new paper.Point(chart.xscale(point.id), chart.yscale(0)), 
+							new paper.Point(chart.xscale(point.id) + chart.xscale.rangeBand(), chart.yscale(point.value))
+						),
+					fillColor : '#999999'
+				});
 
-				//console.log(point, rectangle);
+				var floorPath = new paper.Path();
+
+				floorPath.strokeColor = '#999999';
+				floorPath.strokeWidth = 1;
+
+				floorPath.add(new paper.Point(zoneX.start, chart.yscale(0)));
+				floorPath.add(new paper.Point(zoneX.end, chart.yscale(0)));
+
+				// Labels
+				var labelColor = '#999999';
+
+				new paper.PointText({
+				    point: [chart.xscale(point.id)+(chart.xscale.rangeBand()/2), chart.yscale(0)+15],
+				    content: point.id,
+				    fillColor: labelColor,
+				    justification : 'center'
+				});
+				new paper.PointText({
+				    point: [chart.xscale(point.id)+(chart.xscale.rangeBand()/2), chart.yscale(point.value)-5],
+				    content: point.value,
+				    fillColor: labelColor,
+				    justification : 'center'
+				});
+
 			});
 
 

@@ -99,25 +99,6 @@ var dataset = {
 			value: 4459,
 			id: 'Dec-14'
 		}]
-	}, {
-		id: 'dates',
-		name: 'Dates',
-		points: [{
-			value: 'Sep-14',
-			id:'1'
-		},
-		{
-			value: 'Oct-14',
-			id:'2'
-		},
-		{
-			value: 'Nov-14',
-			id:'3'
-		},
-		{
-			value: 'Dec-14',
-			id:'4'
-		}]
 	}]
 }
 

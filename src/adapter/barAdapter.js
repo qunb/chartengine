@@ -21,7 +21,7 @@ function BarAdapter(model) {
      */
 BarAdapter.prototype.computeLines = function(dataset) {
 	var line = dataset.lines[0];
-	line.points = line.points.reverse();
+	// line.points = line.points.reverse();
 	// // Reorder lines
 	// line.points = _.sortBy(line.points, function(point) {
 	// 	return point.value;

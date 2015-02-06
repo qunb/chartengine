@@ -410,6 +410,20 @@ var AbstractChart = d3.chart("AbstractChart", {
         this.params.title = title;
         this.titleInstance.html(title);
         return this;
+    },
+
+    // get zone positions
+    getZoneX: function(zone){
+        return {
+            start: this.zones[zone].width.start*this.width(),
+            end: this.zones[zone].width.end*this.width()
+        }
+    },
+    getZoneY: function(zone){
+        return {
+            start: this.zones[zone].height.start*this.height(),
+            end: this.zones[zone].height.end*this.height()
+        }
     }
 
 });

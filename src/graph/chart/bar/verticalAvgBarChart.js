@@ -71,11 +71,14 @@ var VerticalAvgBarChart = d3.chart("AbstractChart").extend("VerticalAvgBarChart"
         //chart.on('change:height', changeLinearYscaleRange);
         changeLinearYscaleRange();
 
+        this.canvasAvgLineLayer = this.base.append('custom:sketch').classed('barAvgLine', true);
+        this.canvasAvgLineleLayerInstance = this.layer('canvasAvgLineLayer', this.canvasAvgLineLayer, CanvasAvgLineLayer);
+
         this.canvasBarRectangleLayer = this.base.append('custom:sketch').classed('barRectangleLayer', true);
         this.canvasBarRectangleLayerInstance = this.layer('canvasBarRectangleLayer', this.canvasBarRectangleLayer, CanvasBarRectangleLayer);
 
-        this.canvasAvgLineLayer = this.base.append('custom:sketch').classed('barAvgLine', true);
-        this.canvasAvgLineleLayerInstance = this.layer('canvasAvgLineLayer', this.canvasAvgLineLayer, CanvasAvgLineLayer);
+        //this.canvasAvgLineLayer = this.base.append('custom:sketch').classed('barAvgLine', true);
+        //this.canvasAvgLineleLayerInstance = this.layer('canvasAvgLineLayer', this.canvasAvgLineLayer, CanvasAvgLineLayer);
     },
 
     transform: function(data) {
@@ -85,7 +88,7 @@ var VerticalAvgBarChart = d3.chart("AbstractChart").extend("VerticalAvgBarChart"
         data = this.colorManager.attributesColors(data);
         data = BarAdapter.computeLines(data);
 
-        console.log(data.points);
+        //console.log(data.points);
 
         var extent = d3.extent(data.points, function(point) {
             return point.value;
@@ -98,7 +101,7 @@ var VerticalAvgBarChart = d3.chart("AbstractChart").extend("VerticalAvgBarChart"
         this.yscale.domain(extent);
 
         data.avg = Math.round(data.points.reduce(function(a, b){
-            return (a.value || a) + b;
+            return (a.value || a) + b.value;
         })/data.points.length);
 
         return data;
