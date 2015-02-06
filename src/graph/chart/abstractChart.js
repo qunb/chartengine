@@ -424,6 +424,13 @@ var AbstractChart = d3.chart("AbstractChart", {
             start: this.zones[zone].height.start*this.height(),
             end: this.zones[zone].height.end*this.height()
         }
+    },
+
+    getCanvasImage: function(){
+        var anchorId = chart.params.anchorId,
+            canvas = d3.select(anchorId+' canvas');
+
+        return canvas.node().toDataURL();
     }
 
 });
