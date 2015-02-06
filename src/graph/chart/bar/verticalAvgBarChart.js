@@ -11,6 +11,7 @@ var Formatter = require('Formatter');
 var BarAdapter = require('BarAdapter');
 
 var CanvasBarRectangleLayer = require('CanvasBarRectangleLayer');
+var CanvasAvgLineLayer = require('CanvasAvgLineLayer');
 
 //var OrdinalAxisChart = require('OrdinalAxisChart');
 //var QuantitativeAxisChart = require('QuantitativeAxisChart');
@@ -73,8 +74,8 @@ var VerticalAvgBarChart = d3.chart("AbstractChart").extend("VerticalAvgBarChart"
         this.canvasBarRectangleLayer = this.base.append('custom:sketch').classed('barRectangleLayer', true);
         this.canvasBarRectangleLayerInstance = this.layer('canvasBarRectangleLayer', this.canvasBarRectangleLayer, CanvasBarRectangleLayer);
 
-        //this.barLabelLayer = this.base.append('g').classed('barLabelLayer', true)
-        //this.barLabelLayerInstance = this.layer('barLabelLayer', this.barLabelLayer, BarLabelLayer);
+        this.canvasAvgLineLayer = this.base.append('custom:sketch').classed('barAvgLine', true);
+        this.canvasAvgLineleLayerInstance = this.layer('canvasAvgLineLayer', this.canvasAvgLineLayer, CanvasAvgLineLayer);
     },
 
     transform: function(data) {
@@ -88,19 +89,7 @@ var VerticalAvgBarChart = d3.chart("AbstractChart").extend("VerticalAvgBarChart"
 
         var extent = d3.extent(data.points, function(point) {
             return point.value;
-        })
-
-        // var distance = extent[1] - extent[0]
-        // if (extent[0] >= 0) {
-        //     extent[0] = 0
-        // } else {
-        //     extent[0] = extent[0] - distance / 10
-        // }
-        // if (extent[1] <= 0) {
-        //     extent[1] = 0
-        // } else {
-        //     extent[1] = extent[1] + distance / 10
-        // }
+        });
 
         this.xscale.domain(_.pluck(data.points, function(point){
             return point.id;
@@ -108,7 +97,11 @@ var VerticalAvgBarChart = d3.chart("AbstractChart").extend("VerticalAvgBarChart"
 
         this.yscale.domain(extent);
 
-        return data.points;
+        data.avg = Math.round(data.points.reduce(function(a, b){
+            return (a.value || a) + b;
+        })/data.points.length);
+
+        return data;
     },
 
     overEvent: function(params) {

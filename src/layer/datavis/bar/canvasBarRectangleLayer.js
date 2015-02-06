@@ -10,14 +10,14 @@ var CanvasBarRectangleLayer = {
 
 	modes: ["large", "medium", "small"],
 
-	dataBind: function(points) {
-		return this.selectAll('.barRect').data(points, function(point) {
+	dataBind: function(data) {
+		return this.selectAll('.f-barRect').data(data.points, function(point) {
 			return point.id;
 		});
 	},
 
 	insert: function() {
-		return this.append('custom:rect').classed('barRect', true);
+		return this.append('custom:rect').classed('f-barRect', true);
 	},
 
 	over: function(params) {
@@ -77,7 +77,7 @@ var CanvasBarRectangleLayer = {
 
 				//barPaths.push(barPath);
 
-				console.log(point, rectangle);
+				//console.log(point, rectangle);
 			});
 
 
