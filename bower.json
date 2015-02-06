@@ -15,7 +15,8 @@
     "js-schema": "*",
     "faker": "*",
     "chance": "*",
-    "numeral": "*"
+    "numeral": "*",
+    "paperjs": "*"
   },
   "resolutions": {
     "d3": "3.4.11"

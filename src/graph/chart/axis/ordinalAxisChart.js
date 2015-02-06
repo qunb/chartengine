@@ -63,6 +63,7 @@ var OrdinalAxisChart = d3.chart('AbstractChart').extend('OrdinalAxisChart', {
 			.attr("class", "ordinal_axis")
 			.attr('transform', computeTransform);
 		chart.on('resize', function() {
+			console.log('toto');
 			chart.axisInstance.attr('transform', computeTransform);
 		});
 	},
