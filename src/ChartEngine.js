@@ -10,10 +10,10 @@ ChartEngine
 require('d3extended');
 
 // Import style
-require('allStyle');
+//require('allStyle');
 
 // Import paper
-var paper = require('paperjs');
+//var paper = require('paperjs');
 
 // Import infographies and charts
 require('MarimekkoChart');
@@ -33,6 +33,7 @@ Creates a new chart
 @return the created chart object
 ChartEngine.create({anchorId: "#myChartContainer", chartType: "PieBarChart", width: 950, height: 400})
 */
+
 ChartEngine.create = function(params) {
 	var d3Dom = d3.select(params.anchorId);
 	

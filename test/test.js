@@ -9,7 +9,7 @@ var chartParams = {
 	size: 'auto'
 };
 
-var chart = ChartEngine.create(chartParams);
+window.chart = ChartEngine.create(chartParams);
 
 // var dataset = DatasetFactory.generateDataset('marimekko', 3, 2);
 
