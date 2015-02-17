@@ -426,6 +426,16 @@ var AbstractChart = d3.chart("AbstractChart", {
         }
     },
 
+    clearCanvas: function(){
+        var anchorId = chart.params.anchorId,
+            canvas = d3.select(anchorId+' canvas').node();
+
+        ctx = canvas.getContext();
+        context.clearRect ( 0 , 0 , canvas.width, canvas.height );
+
+        return this;
+    },
+
     getCanvasImage: function(){
         var anchorId = chart.params.anchorId,
             canvas = d3.select(anchorId+' canvas');
