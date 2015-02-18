@@ -37,20 +37,41 @@ var CanvasBarRectangleLayer = {
 
 	events: {
 		enter: function() {
-			// var chart = this.chart();
-			// this
-			// 	.on('mouseover', function(d, i, j) {
-			// 		chart.trigger('over', {
-			// 			chart: chart.params,
-			// 			elId: d.id
-			// 		});
-			// 	})
-			// 	.on('mouseout', function(d, i, j) {
-			// 		chart.trigger('out', {
-			// 			chart: chart.params,
-			// 			elId: d.id
-			// 		});
-			// 	});
+			var chart = this.chart();
+			var zoneX = chart.getZoneX('ordinalXAxis');
+
+			this.each(function(point){
+
+				this.rect = new paper.Rectangle({
+					x : chart.xscale(point.id),
+					y : chart.yscale(point.value),
+					width : chart.xscale.rangeBand() || 0.1,
+					height : chart.yscale(0) - chart.yscale(point.value) || 0.1
+				});
+
+				this.path = new paper.Path.Rectangle({
+					rectangle : this.rect,
+					fillColor : '#999999'
+				});
+
+				// Labels
+				var labelColor = '#999999';
+
+				this.xLabel = new paper.PointText({
+				    point: [chart.xscale(point.id)+(chart.xscale.rangeBand()/2), chart.yscale(0)+15],
+				    content: point.id,
+				    fillColor: labelColor,
+				    justification : 'center'
+				});
+				this.valueLabel = new paper.PointText({
+				    point: [chart.xscale(point.id)+(chart.xscale.rangeBand()/2), chart.yscale(point.value)-5],
+				    content: point.value,
+				    fillColor: labelColor,
+				    justification : 'center'
+				});
+
+			});
+
 			return this;
 		},
 		'enter:transition': function() {
@@ -58,6 +79,34 @@ var CanvasBarRectangleLayer = {
 		},
 
 		update: function() {
+			var chart = this.chart();
+			var zoneX = chart.getZoneX('ordinalXAxis');
+
+			this.each(function(point){
+				// TODO create groups of items
+				this.path.visible = true;
+				this.xLabel.visible = true;
+				this.valueLabel.visible = true;
+
+				this.path.scale(
+					chart.xscale.rangeBand()/this.path.bounds.width, 
+					(chart.yscale(0) - chart.yscale(point.value))/this.path.bounds.height
+				);
+
+				this.path.pivot = this.path.bounds.topLeft;
+				this.path.position = new paper.Point(chart.xscale(point.id), chart.yscale(point.value));
+
+				this.xLabel.set({
+					point: [chart.xscale(point.id)+(chart.xscale.rangeBand()/2), chart.yscale(0)+15],
+				    content: point.id
+				});
+
+				this.valueLabel.set({
+					point: [chart.xscale(point.id)+(chart.xscale.rangeBand()/2), chart.yscale(point.value)-5],
+				    content: point.value
+				});
+			});
+
 			return this;
 		},
 		'update:transition': function() {
@@ -68,51 +117,36 @@ var CanvasBarRectangleLayer = {
 			var chart = this.chart();
 			var zoneX = chart.getZoneX('ordinalXAxis');
 
-			this.each(function(point){
+			if(!chart.floorPath) {
+				chart.floorPath = new paper.Path();
+				chart.floorPath.strokeColor = '#999999';
+				chart.floorPath.strokeWidth = 1;
+			}
 
-				new paper.Path.Rectangle({
-					rectangle : new paper.Rectangle( 
-							new paper.Point(chart.xscale(point.id), chart.yscale(0)), 
-							new paper.Point(chart.xscale(point.id) + chart.xscale.rangeBand(), chart.yscale(point.value))
-						),
-					fillColor : '#999999'
-				});
-
-				var floorPath = new paper.Path();
-
-				floorPath.strokeColor = '#999999';
-				floorPath.strokeWidth = 1;
-
-				floorPath.add(new paper.Point(zoneX.start, chart.yscale(0)));
-				floorPath.add(new paper.Point(zoneX.end, chart.yscale(0)));
-
-				// Labels
-				var labelColor = '#999999';
-
-				new paper.PointText({
-				    point: [chart.xscale(point.id)+(chart.xscale.rangeBand()/2), chart.yscale(0)+15],
-				    content: point.id,
-				    fillColor: labelColor,
-				    justification : 'center'
-				});
-				new paper.PointText({
-				    point: [chart.xscale(point.id)+(chart.xscale.rangeBand()/2), chart.yscale(point.value)-5],
-				    content: point.value,
-				    fillColor: labelColor,
-				    justification : 'center'
-				});
-
-			});
-
+			chart.floorPath.removeSegments();
+			chart.floorPath.add(new paper.Point(zoneX.start, chart.yscale(0)));
+			chart.floorPath.add(new paper.Point(zoneX.end, chart.yscale(0)));
 
 			paper.view.draw();
+
+			return this;
 		},
 		'merge:transition': function() {
 			return this;
 		},
 
 		exit: function() {
+			var chart = this.chart();
+			var zoneX = chart.getZoneX('ordinalXAxis');
+
+			this.each(function(point){
+				this.path.visible = false;
+				this.xLabel.visible = false;
+				this.valueLabel.visible = false;
+			});
+
 			//this.remove();
+			return this;
 		},
 		'exit:transition': function() {
 			return this;

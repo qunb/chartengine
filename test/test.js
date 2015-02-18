@@ -370,6 +370,39 @@ var dataset = {
 
 chart.draw(dataset);
 
+dataset.lines[0].points.push({
+	value: null,
+	id: 'Jan-15'
+});
+
+chart.draw(dataset);
+
+dataset.lines[0].points[4].value = 6000;
+
+dataset.lines[0].points = [
+	{
+		value: 603,
+		id: 'Sep-14'
+	},
+	{
+		value: 1076,
+		id: 'Oct-14'
+	},
+	{
+		value: 2907,
+		id: 'Nov-14'
+	}
+]
+
+chart.draw(dataset);
+
+dataset.lines[0].points.push({
+	value: 1500,
+	id: 'Jan-15'
+});
+
+chart.draw(dataset);
+
 // setTimeout(function() {
 // 	var dataset2 = DatasetFactory.generateDataset('marimekko', 4, 4);
 // 	chart.draw(dataset2);

@@ -28,36 +28,22 @@ var CanvasAvgLineLayer = {
 
 	events: {
 		enter: function() {
-			return this;
-		},
-		'enter:transition': function() {
-			return this;
-		},
-
-		update: function() {
-			return this;
-		},
-		'update:transition': function() {
-			return this;
-		},
-
-		merge: function() {
 			var chart = this.chart();
-
 			var zoneX = chart.getZoneX('ordinalXAxis');
 			// nice blue #3F84AD
+
 			this.each(function(avg){
-				var linePath = new paper.Path();
+				this.linePath = new paper.Path();
 
-				linePath.strokeColor = '#3F84AD';
-				linePath.strokeWidth = 2;
+				this.linePath.strokeColor = '#3F84AD';
+				this.linePath.strokeWidth = 2;
 
-				linePath.dashArray = [6, 3];
+				this.linePath.dashArray = [6, 3];
 
-				linePath.add(new paper.Point(zoneX.start, chart.yscale(avg)));
-				linePath.add(new paper.Point(zoneX.end, chart.yscale(avg)));
+				this.linePath.add(new paper.Point(zoneX.start, chart.yscale(avg)));
+				this.linePath.add(new paper.Point(zoneX.end, chart.yscale(avg)));
 
-				new paper.PointText({
+				this.lineLabel = new paper.PointText({
 				    point: [zoneX.start-3, chart.yscale(avg)+4],
 				    content: avg,
 				    fillColor: '#3F84AD',
@@ -65,7 +51,38 @@ var CanvasAvgLineLayer = {
 				});
 			});
 
+			return this;
+		},
+		'enter:transition': function() {
+			return this;
+		},
+
+		update: function() {
+			var chart = this.chart();
+			var zoneX = chart.getZoneX('ordinalXAxis');
+
+			this.each(function(avg){
+				this.linePath.removeSegments();
+
+				this.linePath.add(new paper.Point(zoneX.start, chart.yscale(avg)));
+				this.linePath.add(new paper.Point(zoneX.end, chart.yscale(avg)));
+
+				this.lineLabel.set({
+					point: [zoneX.start-3, chart.yscale(avg)+4],
+					content: avg
+				});
+			});
+
+			return this;
+		},
+		'update:transition': function() {
+			return this;
+		},
+
+		merge: function() {
 			paper.view.draw();
+
+			return this;
 		},
 		'merge:transition': function() {
 			return this;

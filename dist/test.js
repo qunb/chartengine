@@ -491,6 +491,39 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	chart.draw(dataset);
 
+	dataset.lines[0].points.push({
+		value: null,
+		id: 'Jan-15'
+	});
+
+	chart.draw(dataset);
+
+	dataset.lines[0].points[4].value = 6000;
+
+	dataset.lines[0].points = [
+		{
+			value: 603,
+			id: 'Sep-14'
+		},
+		{
+			value: 1076,
+			id: 'Oct-14'
+		},
+		{
+			value: 2907,
+			id: 'Nov-14'
+		}
+	]
+
+	chart.draw(dataset);
+
+	dataset.lines[0].points.push({
+		value: 1500,
+		id: 'Jan-15'
+	});
+
+	chart.draw(dataset);
+
 	// setTimeout(function() {
 	// 	var dataset2 = DatasetFactory.generateDataset('marimekko', 4, 4);
 	// 	chart.draw(dataset2);
@@ -509,7 +542,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(29);
+	__webpack_require__(28);
 
 	/* Util to generate datasets with random values */
 
@@ -630,13 +663,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	// import d3 base
-	__webpack_require__(28);
+	__webpack_require__(29);
 
 	// extend with d3.chart
-	__webpack_require__(18);
+	__webpack_require__(14);
 
 	// extend with d3.tip
-	d3.tip = __webpack_require__(19);
+	d3.tip = __webpack_require__(15);
 
 	d3.selection.prototype.moveToFront = function() {
 		return this.each(function() {
@@ -705,7 +738,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var AbstractChart = __webpack_require__(12);
 
 	// Import adapter
-	var MarimekkoAdapter = __webpack_require__(14);
+	var MarimekkoAdapter = __webpack_require__(16);
 
 	// Import layers
 	var MarimekkoRectangleLayer = __webpack_require__(32);
@@ -713,10 +746,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var MarimekkoLabelLayer = __webpack_require__(34);
 
 	// Import subcharts
-	var QuantitativeAxisChart = __webpack_require__(15);
-	var OrdinalLegendChart = __webpack_require__(16);
+	var QuantitativeAxisChart = __webpack_require__(17);
+	var OrdinalLegendChart = __webpack_require__(18);
 
-	var Formatter = __webpack_require__(17);
+	var Formatter = __webpack_require__(19);
 
 	var xscale = d3.scale.linear();
 	var yscale = d3.scale.linear();
@@ -980,7 +1013,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	*/
 
 	var AbstractChart = __webpack_require__(12);
-	var Formatter = __webpack_require__(17);
+	var Formatter = __webpack_require__(19);
 
 	var PieAdapter = __webpack_require__(24);
 
@@ -1073,7 +1106,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	*/
 
 	var AbstractChart = __webpack_require__(12);
-	var Formatter = __webpack_require__(17);
+	var Formatter = __webpack_require__(19);
 
 	var BarAdapter = __webpack_require__(25);
 
@@ -1081,7 +1114,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var BarLabelLayer = __webpack_require__(39);
 
 	var OrdinalAxisChart = __webpack_require__(26);
-	var QuantitativeAxisChart = __webpack_require__(15);
+	var QuantitativeAxisChart = __webpack_require__(17);
 
 	var ordinalScale = d3.scale.ordinal();
 	var linearScale = d3.scale.linear();
@@ -1222,7 +1255,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	*/
 
 	var AbstractChart = __webpack_require__(12);
-	var Formatter = __webpack_require__(17);
+	var Formatter = __webpack_require__(19);
 
 	var BarAdapter = __webpack_require__(25);
 
@@ -1812,7 +1845,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    },
 
+	    clearCanvas: function(){
+	        var chart = this;
+
+	        var anchorId = chart.params.anchorId,
+	            canvas = d3.select(anchorId+' canvas').node();
+
+	        ctx = canvas.getContext('2d');
+	        ctx.clearRect (0, 0, canvas.width, canvas.height);
+
+	        return this;
+	    },
+
 	    getCanvasImage: function(){
+	        var chart = this;
+	        
 	        var anchorId = chart.params.anchorId,
 	            canvas = d3.select(anchorId+' canvas');
 
@@ -2003,7 +2050,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = AbstractChart;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30), __webpack_require__(60)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30), __webpack_require__(58)))
 
 /***/ },
 /* 13 */
@@ -2082,332 +2129,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(_) {/**
-	 Computes lines based on the model's projections
-	 @class MarimekkoAdapter
-	 @param model the chart model
-	 @constructor
-	 @module ChartEngine
-	 */
-
-	var AbstractAdapter = __webpack_require__(55);
-
-	MarimekkoAdapter.prototype = Object.create(AbstractAdapter.prototype);
-
-	function MarimekkoAdapter(model) {
-		AbstractAdapter.call(this, model);
-	}
-
-	/**
-	     Compute the lines from the chart model
-	     @method computeLines
-	     */
-	MarimekkoAdapter.prototype.computeLines = function(data) {
-
-		data.total = 0;
-		var xoffset = 0;
-
-		// Calculate sub sum per line
-		_.each(data.lines, function(line) {
-			line.sum = 0;
-			_.each(line.points, function(point) {
-				data.total += point.value;
-				line.sum += point.value;
-				point.parent = line;
-				point.uniqueId = _.uniqueId();
-			});
-		});
-
-		// Reorder lines
-		data.lines = _.sortBy(data.lines, function(line) {
-			if (line.points.length == 1 && line.points[0].status == 'other') {
-				return 0;
-			} else {
-				return -line.sum;
-			}
-		});
-
-		// Calculate offset line
-		_.each(data.lines, function(line) {
-			line.offset = xoffset;
-			line.total = data.total;
-			xoffset += line.sum;
-
-			// Reorder points
-			line.points = _.sortBy(line.points, function(point) {
-				if (point.status && point.status == 'other') {
-					return 0;
-				} else {
-					return point.value;
-				}
-			});
-
-			// Calculate offset point
-			var yoffset = 0;
-			_.each(line.points, function(point) {
-				point.offset = yoffset;
-				yoffset += point.value;
-			});
-		});
-
-		_.each(data.lines, function(line) {
-			line.points = line.points.reverse();
-		});
-
-		return data;
-
-	};
-
-	module.exports = new MarimekkoAdapter();
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
-
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	@module ChartEngine
-	@submodule Chart
-	@class QuantitativeAxisChart
-	*/
-	__webpack_require__(5);
-
-	var AbstractChart = __webpack_require__(12);
-	var Formatter = __webpack_require__(17);
-
-	var QuantitativeAxisChart = d3.chart('AbstractChart').extend('QuantitativeAxisChart', {
-
-		zones: {
-			ticks: {
-				width: {
-					start: 0,
-					end: 1
-				},
-				height: {
-					start: 0,
-					end: 1
-				}
-			}
-		},
-
-		initialize: function(options) {
-			var chart = this;
-			this.options = options;
-
-			this.base.classed('quantitativeAxisChart', true);
-
-			this.axis = d3.svg
-				.axis()
-				.scale(this.options.scale)
-				.orient(this.options.orientation)
-				.tickFormat(function(point) {
-					return Formatter.format(point, chart.options.formatter);
-				});
-
-			var zone = this.zones.ticks;
-
-			var computeTransform = function() {
-				var x = 0,
-					y = 0;
-				switch (chart.options.orientation) {
-					case 'left':
-						x = zone.width.end * chart.width();
-						y = 0;
-						break;
-					case 'right':
-						x = zone.width.start * chart.width();
-						y = 0;
-						break;
-					case 'top':
-						x = 0;
-						y = zone.height.end * chart.height();
-						break;
-					case 'bottom':
-						x = 0;
-						y = zone.height.start * chart.height();
-						break;
-					default:
-				}
-				return 'translate(' + x + ',' + y + ')';
-			};
-
-			chart.axisInstance = zone.anchor
-				.attr("class", "quantitative_axis")
-				.attr('transform', computeTransform);
-
-			chart.on('resize', function() {
-				chart.axisInstance.attr('transform', computeTransform);
-			});
-
-			chart.backgroundNegativeArea = this.base
-				.insert('rect', '.quantitative_axis')
-				.classed('negativeArea', true);
-		},
-
-		addGrid: function() {
-			var chart = this;
-
-			var putZeroClass = function(value, i, j) {
-				return value == 0;
-			};
-
-			var putGridLineClass = function(value, i, j) {
-				return chart.options.grid || value == 0;
-			};
-
-			switch (chart.options.orientation) {
-				case 'left':
-					this.base
-						.selectAll('g.tick line')
-						.classed("grid-line", putGridLineClass)
-						.classed("zero", putZeroClass)
-						.attr("x1", 0)
-						.attr("y1", 0)
-						.attr("x2", this.params.parent.width() * this.params.parent.zones.linearXAxis.width.end)
-						.attr("y2", 0);
-					break;
-				case 'right':
-					break;
-				case 'top':
-					break;
-				case 'bottom':
-					this.base
-						.selectAll('g.tick line')
-						.classed("grid-line", putGridLineClass)
-						.classed("zero", putZeroClass)
-						.attr("x1", 0)
-						.attr("y1", this.params.parent.height() * this.params.parent.zones.ordinalYAxis.height.start)
-						.attr("x2", 0)
-						.attr("y2", this.params.parent.height() * this.params.parent.zones.ordinalYAxis.height.end);
-					break;
-				default:
-			}
-		},
-
-		placeNegativeArea: function(points) {
-			var chart = this;
-			var minValue = d3.min(chart.options.scale.domain());
-
-			if (minValue < 0) {
-				this.backgroundNegativeArea
-					.attr('x', function() {
-						return chart.params.parent.width() * chart.params.parent.zones.linearXAxis.width.start;
-					})
-					.attr('y', function() {
-						return chart.params.parent.height() * chart.params.parent.zones.ordinalYAxis.height.start;
-					})
-					.attr('width', function() {
-						return chart.options.scale(0) - chart.options.scale(minValue);
-					})
-					.attr('height', function() {
-						return chart.params.parent.height() * chart.params.parent.zones.ordinalYAxis.height.end - chart.params.parent.height() * chart.params.parent.zones.ordinalYAxis.height.start;
-					});
-			}
-		},
-
-		transform: function(points) {
-			var chart = this;
-			// this.axis.tickValues(_.union(d3.extent(points, function(point) {
-			// 	return point.value;
-			// }), [0]))
-			this.axisInstance.call(this.axis);
-			this.addGrid();
-			this.placeNegativeArea(points);
-			return points;
-		}
-
-	});
-
-	module.exports = QuantitativeAxisChart;
-
-/***/ },
-/* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	@module ChartEngine
-	@submodule Chart
-	@class OrdinalLinearAxisChart
-	*/
-	__webpack_require__(5);
-
-	var AbstractChart = __webpack_require__(12);
-	var OrdinalLegendLabelLayer = __webpack_require__(66);
-
-	function getXYFromTranslate(element) {
-		var split = element.attr("transform").split(",");
-		var x = ~~split[0].split("(")[1];
-		var y = ~~split[1].split(")")[0];
-		return [x, y];
-	}
-
-	var OrdinalLegendChart = d3.chart('AbstractChart').extend('OrdinalLegendChart', {
-
-		initialize: function(options) {
-			var chart = this;
-			this.options = options;
-
-			this.ordinalLegendLabelLayer = this.base
-				.append('g')
-				.classed('ordinalLegendLabelLayer', true);
-			this.ordinalLegendLabelLayerInstance = this.layer('ordinalLegendLabelLayer', this.ordinalLegendLabelLayer, OrdinalLegendLabelLayer);
-		},
-
-		transform: function(data) {
-			this.base.attr('transform', 'translate(0,' + getXYFromTranslate(this.base)[1] + ')');
-			return data;
-		}
-
-	});
-
-	module.exports = OrdinalLegendChart;
-
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	@module ChartEngine
-	@submodule Formatter
-	@class Formatter
-	*/
-
-	var ValueFormatter = __webpack_require__(58);
-	var TimeFormatter = __webpack_require__(59);
-
-	var Formatter = function() {};
-
-	Formatter.prototype.format = function(value, formatter) {
-		var formattedValue = value;
-		switch (formatter) {
-			case 'ValueFormatter':
-				formattedValue = value;
-				break;
-			case 'ShortValueFormatter':
-				formattedValue = ValueFormatter.formatShort(value);
-				break;
-			case 'PercentFormatter':
-				formattedValue = ValueFormatter.formatPercent(value);
-				break;
-			case 'ShortMonthFormatter':
-				formattedValue = TimeFormatter.formatMonthShort(value);
-				break;
-			case 'MediumMonthFormatter':
-				formattedValue = TimeFormatter.formatMonthMedium(value);
-				break;
-			case 'MonthFormatter':
-				formattedValue = TimeFormatter.formatMonth(value);
-				break;
-		}
-		return formattedValue;
-	};
-
-	module.exports = new Formatter();
-
-/***/ },
-/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*! d3.chart - v0.2.1
@@ -3170,7 +2891,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// })(this);
 
 /***/ },
-/* 19 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	 var d3tip = function() {
@@ -3464,6 +3185,332 @@ return /******/ (function(modules) { // webpackBootstrap
 	 module.exports = d3tip;
 
 /***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(_) {/**
+	 Computes lines based on the model's projections
+	 @class MarimekkoAdapter
+	 @param model the chart model
+	 @constructor
+	 @module ChartEngine
+	 */
+
+	var AbstractAdapter = __webpack_require__(55);
+
+	MarimekkoAdapter.prototype = Object.create(AbstractAdapter.prototype);
+
+	function MarimekkoAdapter(model) {
+		AbstractAdapter.call(this, model);
+	}
+
+	/**
+	     Compute the lines from the chart model
+	     @method computeLines
+	     */
+	MarimekkoAdapter.prototype.computeLines = function(data) {
+
+		data.total = 0;
+		var xoffset = 0;
+
+		// Calculate sub sum per line
+		_.each(data.lines, function(line) {
+			line.sum = 0;
+			_.each(line.points, function(point) {
+				data.total += point.value;
+				line.sum += point.value;
+				point.parent = line;
+				point.uniqueId = _.uniqueId();
+			});
+		});
+
+		// Reorder lines
+		data.lines = _.sortBy(data.lines, function(line) {
+			if (line.points.length == 1 && line.points[0].status == 'other') {
+				return 0;
+			} else {
+				return -line.sum;
+			}
+		});
+
+		// Calculate offset line
+		_.each(data.lines, function(line) {
+			line.offset = xoffset;
+			line.total = data.total;
+			xoffset += line.sum;
+
+			// Reorder points
+			line.points = _.sortBy(line.points, function(point) {
+				if (point.status && point.status == 'other') {
+					return 0;
+				} else {
+					return point.value;
+				}
+			});
+
+			// Calculate offset point
+			var yoffset = 0;
+			_.each(line.points, function(point) {
+				point.offset = yoffset;
+				yoffset += point.value;
+			});
+		});
+
+		_.each(data.lines, function(line) {
+			line.points = line.points.reverse();
+		});
+
+		return data;
+
+	};
+
+	module.exports = new MarimekkoAdapter();
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	@module ChartEngine
+	@submodule Chart
+	@class QuantitativeAxisChart
+	*/
+	__webpack_require__(5);
+
+	var AbstractChart = __webpack_require__(12);
+	var Formatter = __webpack_require__(19);
+
+	var QuantitativeAxisChart = d3.chart('AbstractChart').extend('QuantitativeAxisChart', {
+
+		zones: {
+			ticks: {
+				width: {
+					start: 0,
+					end: 1
+				},
+				height: {
+					start: 0,
+					end: 1
+				}
+			}
+		},
+
+		initialize: function(options) {
+			var chart = this;
+			this.options = options;
+
+			this.base.classed('quantitativeAxisChart', true);
+
+			this.axis = d3.svg
+				.axis()
+				.scale(this.options.scale)
+				.orient(this.options.orientation)
+				.tickFormat(function(point) {
+					return Formatter.format(point, chart.options.formatter);
+				});
+
+			var zone = this.zones.ticks;
+
+			var computeTransform = function() {
+				var x = 0,
+					y = 0;
+				switch (chart.options.orientation) {
+					case 'left':
+						x = zone.width.end * chart.width();
+						y = 0;
+						break;
+					case 'right':
+						x = zone.width.start * chart.width();
+						y = 0;
+						break;
+					case 'top':
+						x = 0;
+						y = zone.height.end * chart.height();
+						break;
+					case 'bottom':
+						x = 0;
+						y = zone.height.start * chart.height();
+						break;
+					default:
+				}
+				return 'translate(' + x + ',' + y + ')';
+			};
+
+			chart.axisInstance = zone.anchor
+				.attr("class", "quantitative_axis")
+				.attr('transform', computeTransform);
+
+			chart.on('resize', function() {
+				chart.axisInstance.attr('transform', computeTransform);
+			});
+
+			chart.backgroundNegativeArea = this.base
+				.insert('rect', '.quantitative_axis')
+				.classed('negativeArea', true);
+		},
+
+		addGrid: function() {
+			var chart = this;
+
+			var putZeroClass = function(value, i, j) {
+				return value == 0;
+			};
+
+			var putGridLineClass = function(value, i, j) {
+				return chart.options.grid || value == 0;
+			};
+
+			switch (chart.options.orientation) {
+				case 'left':
+					this.base
+						.selectAll('g.tick line')
+						.classed("grid-line", putGridLineClass)
+						.classed("zero", putZeroClass)
+						.attr("x1", 0)
+						.attr("y1", 0)
+						.attr("x2", this.params.parent.width() * this.params.parent.zones.linearXAxis.width.end)
+						.attr("y2", 0);
+					break;
+				case 'right':
+					break;
+				case 'top':
+					break;
+				case 'bottom':
+					this.base
+						.selectAll('g.tick line')
+						.classed("grid-line", putGridLineClass)
+						.classed("zero", putZeroClass)
+						.attr("x1", 0)
+						.attr("y1", this.params.parent.height() * this.params.parent.zones.ordinalYAxis.height.start)
+						.attr("x2", 0)
+						.attr("y2", this.params.parent.height() * this.params.parent.zones.ordinalYAxis.height.end);
+					break;
+				default:
+			}
+		},
+
+		placeNegativeArea: function(points) {
+			var chart = this;
+			var minValue = d3.min(chart.options.scale.domain());
+
+			if (minValue < 0) {
+				this.backgroundNegativeArea
+					.attr('x', function() {
+						return chart.params.parent.width() * chart.params.parent.zones.linearXAxis.width.start;
+					})
+					.attr('y', function() {
+						return chart.params.parent.height() * chart.params.parent.zones.ordinalYAxis.height.start;
+					})
+					.attr('width', function() {
+						return chart.options.scale(0) - chart.options.scale(minValue);
+					})
+					.attr('height', function() {
+						return chart.params.parent.height() * chart.params.parent.zones.ordinalYAxis.height.end - chart.params.parent.height() * chart.params.parent.zones.ordinalYAxis.height.start;
+					});
+			}
+		},
+
+		transform: function(points) {
+			var chart = this;
+			// this.axis.tickValues(_.union(d3.extent(points, function(point) {
+			// 	return point.value;
+			// }), [0]))
+			this.axisInstance.call(this.axis);
+			this.addGrid();
+			this.placeNegativeArea(points);
+			return points;
+		}
+
+	});
+
+	module.exports = QuantitativeAxisChart;
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	@module ChartEngine
+	@submodule Chart
+	@class OrdinalLinearAxisChart
+	*/
+	__webpack_require__(5);
+
+	var AbstractChart = __webpack_require__(12);
+	var OrdinalLegendLabelLayer = __webpack_require__(66);
+
+	function getXYFromTranslate(element) {
+		var split = element.attr("transform").split(",");
+		var x = ~~split[0].split("(")[1];
+		var y = ~~split[1].split(")")[0];
+		return [x, y];
+	}
+
+	var OrdinalLegendChart = d3.chart('AbstractChart').extend('OrdinalLegendChart', {
+
+		initialize: function(options) {
+			var chart = this;
+			this.options = options;
+
+			this.ordinalLegendLabelLayer = this.base
+				.append('g')
+				.classed('ordinalLegendLabelLayer', true);
+			this.ordinalLegendLabelLayerInstance = this.layer('ordinalLegendLabelLayer', this.ordinalLegendLabelLayer, OrdinalLegendLabelLayer);
+		},
+
+		transform: function(data) {
+			this.base.attr('transform', 'translate(0,' + getXYFromTranslate(this.base)[1] + ')');
+			return data;
+		}
+
+	});
+
+	module.exports = OrdinalLegendChart;
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	@module ChartEngine
+	@submodule Formatter
+	@class Formatter
+	*/
+
+	var ValueFormatter = __webpack_require__(59);
+	var TimeFormatter = __webpack_require__(60);
+
+	var Formatter = function() {};
+
+	Formatter.prototype.format = function(value, formatter) {
+		var formattedValue = value;
+		switch (formatter) {
+			case 'ValueFormatter':
+				formattedValue = value;
+				break;
+			case 'ShortValueFormatter':
+				formattedValue = ValueFormatter.formatShort(value);
+				break;
+			case 'PercentFormatter':
+				formattedValue = ValueFormatter.formatPercent(value);
+				break;
+			case 'ShortMonthFormatter':
+				formattedValue = TimeFormatter.formatMonthShort(value);
+				break;
+			case 'MediumMonthFormatter':
+				formattedValue = TimeFormatter.formatMonthMedium(value);
+				break;
+			case 'MonthFormatter':
+				formattedValue = TimeFormatter.formatMonth(value);
+				break;
+		}
+		return formattedValue;
+	};
+
+	module.exports = new Formatter();
+
+/***/ },
 /* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -3729,7 +3776,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 @constructor
 	 @module ChartEngine
 	 */
-	__webpack_require__(28);
+	__webpack_require__(29);
 
 	var AbstractAdapter = __webpack_require__(55);
 
@@ -3767,7 +3814,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	__webpack_require__(5);
 
 	var AbstractChart = __webpack_require__(12);
-	var Formatter = __webpack_require__(17);
+	var Formatter = __webpack_require__(19);
 
 	var OrdinalAxisChart = d3.chart('AbstractChart').extend('OrdinalAxisChart', {
 
@@ -3870,6 +3917,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 28 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(47)(__webpack_require__(48))
+
+/***/ },
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;!function() {
@@ -13112,12 +13165,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	}();
 
 /***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(47)(__webpack_require__(48))
-
-/***/ },
 /* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -18430,7 +18477,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	@class MarimekkoLabelLayer
 	*/
 
-	var Formatter = __webpack_require__(17);
+	var Formatter = __webpack_require__(19);
 
 	var formatValue = function(point) {
 		return point.value;
@@ -18714,7 +18761,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	@class PieLabelLayer
 	*/
 
-	var Formatter = __webpack_require__(17);
+	var Formatter = __webpack_require__(19);
 
 	var PieLabelLayer = {
 
@@ -18896,7 +18943,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var highlight = '#BE5E2A';
 
-	var Formatter = __webpack_require__(17);
+	var Formatter = __webpack_require__(19);
 
 	var PieCenterLayer = {
 
@@ -19093,7 +19140,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	@class BarLabelLayer
 	*/
 
-	var Formatter = __webpack_require__(17);
+	var Formatter = __webpack_require__(19);
 
 	var BarLabelLayer = {
 
@@ -19212,20 +19259,41 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		events: {
 			enter: function() {
-				// var chart = this.chart();
-				// this
-				// 	.on('mouseover', function(d, i, j) {
-				// 		chart.trigger('over', {
-				// 			chart: chart.params,
-				// 			elId: d.id
-				// 		});
-				// 	})
-				// 	.on('mouseout', function(d, i, j) {
-				// 		chart.trigger('out', {
-				// 			chart: chart.params,
-				// 			elId: d.id
-				// 		});
-				// 	});
+				var chart = this.chart();
+				var zoneX = chart.getZoneX('ordinalXAxis');
+
+				this.each(function(point){
+
+					this.rect = new paper.Rectangle({
+						x : chart.xscale(point.id),
+						y : chart.yscale(point.value),
+						width : chart.xscale.rangeBand() || 0.1,
+						height : chart.yscale(0) - chart.yscale(point.value) || 0.1
+					});
+
+					this.path = new paper.Path.Rectangle({
+						rectangle : this.rect,
+						fillColor : '#999999'
+					});
+
+					// Labels
+					var labelColor = '#999999';
+
+					this.xLabel = new paper.PointText({
+					    point: [chart.xscale(point.id)+(chart.xscale.rangeBand()/2), chart.yscale(0)+15],
+					    content: point.id,
+					    fillColor: labelColor,
+					    justification : 'center'
+					});
+					this.valueLabel = new paper.PointText({
+					    point: [chart.xscale(point.id)+(chart.xscale.rangeBand()/2), chart.yscale(point.value)-5],
+					    content: point.value,
+					    fillColor: labelColor,
+					    justification : 'center'
+					});
+
+				});
+
 				return this;
 			},
 			'enter:transition': function() {
@@ -19233,6 +19301,34 @@ return /******/ (function(modules) { // webpackBootstrap
 			},
 
 			update: function() {
+				var chart = this.chart();
+				var zoneX = chart.getZoneX('ordinalXAxis');
+
+				this.each(function(point){
+					// TODO create groups of items
+					this.path.visible = true;
+					this.xLabel.visible = true;
+					this.valueLabel.visible = true;
+
+					this.path.scale(
+						chart.xscale.rangeBand()/this.path.bounds.width, 
+						(chart.yscale(0) - chart.yscale(point.value))/this.path.bounds.height
+					);
+
+					this.path.pivot = this.path.bounds.topLeft;
+					this.path.position = new paper.Point(chart.xscale(point.id), chart.yscale(point.value));
+
+					this.xLabel.set({
+						point: [chart.xscale(point.id)+(chart.xscale.rangeBand()/2), chart.yscale(0)+15],
+					    content: point.id
+					});
+
+					this.valueLabel.set({
+						point: [chart.xscale(point.id)+(chart.xscale.rangeBand()/2), chart.yscale(point.value)-5],
+					    content: point.value
+					});
+				});
+
 				return this;
 			},
 			'update:transition': function() {
@@ -19243,51 +19339,36 @@ return /******/ (function(modules) { // webpackBootstrap
 				var chart = this.chart();
 				var zoneX = chart.getZoneX('ordinalXAxis');
 
-				this.each(function(point){
+				if(!chart.floorPath) {
+					chart.floorPath = new paper.Path();
+					chart.floorPath.strokeColor = '#999999';
+					chart.floorPath.strokeWidth = 1;
+				}
 
-					new paper.Path.Rectangle({
-						rectangle : new paper.Rectangle( 
-								new paper.Point(chart.xscale(point.id), chart.yscale(0)), 
-								new paper.Point(chart.xscale(point.id) + chart.xscale.rangeBand(), chart.yscale(point.value))
-							),
-						fillColor : '#999999'
-					});
-
-					var floorPath = new paper.Path();
-
-					floorPath.strokeColor = '#999999';
-					floorPath.strokeWidth = 1;
-
-					floorPath.add(new paper.Point(zoneX.start, chart.yscale(0)));
-					floorPath.add(new paper.Point(zoneX.end, chart.yscale(0)));
-
-					// Labels
-					var labelColor = '#999999';
-
-					new paper.PointText({
-					    point: [chart.xscale(point.id)+(chart.xscale.rangeBand()/2), chart.yscale(0)+15],
-					    content: point.id,
-					    fillColor: labelColor,
-					    justification : 'center'
-					});
-					new paper.PointText({
-					    point: [chart.xscale(point.id)+(chart.xscale.rangeBand()/2), chart.yscale(point.value)-5],
-					    content: point.value,
-					    fillColor: labelColor,
-					    justification : 'center'
-					});
-
-				});
-
+				chart.floorPath.removeSegments();
+				chart.floorPath.add(new paper.Point(zoneX.start, chart.yscale(0)));
+				chart.floorPath.add(new paper.Point(zoneX.end, chart.yscale(0)));
 
 				paper.view.draw();
+
+				return this;
 			},
 			'merge:transition': function() {
 				return this;
 			},
 
 			exit: function() {
+				var chart = this.chart();
+				var zoneX = chart.getZoneX('ordinalXAxis');
+
+				this.each(function(point){
+					this.path.visible = false;
+					this.xLabel.visible = false;
+					this.valueLabel.visible = false;
+				});
+
 				//this.remove();
+				return this;
 			},
 			'exit:transition': function() {
 				return this;
@@ -19331,36 +19412,22 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		events: {
 			enter: function() {
-				return this;
-			},
-			'enter:transition': function() {
-				return this;
-			},
-
-			update: function() {
-				return this;
-			},
-			'update:transition': function() {
-				return this;
-			},
-
-			merge: function() {
 				var chart = this.chart();
-
 				var zoneX = chart.getZoneX('ordinalXAxis');
 				// nice blue #3F84AD
+
 				this.each(function(avg){
-					var linePath = new paper.Path();
+					this.linePath = new paper.Path();
 
-					linePath.strokeColor = '#3F84AD';
-					linePath.strokeWidth = 2;
+					this.linePath.strokeColor = '#3F84AD';
+					this.linePath.strokeWidth = 2;
 
-					linePath.dashArray = [6, 3];
+					this.linePath.dashArray = [6, 3];
 
-					linePath.add(new paper.Point(zoneX.start, chart.yscale(avg)));
-					linePath.add(new paper.Point(zoneX.end, chart.yscale(avg)));
+					this.linePath.add(new paper.Point(zoneX.start, chart.yscale(avg)));
+					this.linePath.add(new paper.Point(zoneX.end, chart.yscale(avg)));
 
-					new paper.PointText({
+					this.lineLabel = new paper.PointText({
 					    point: [zoneX.start-3, chart.yscale(avg)+4],
 					    content: avg,
 					    fillColor: '#3F84AD',
@@ -19368,7 +19435,38 @@ return /******/ (function(modules) { // webpackBootstrap
 					});
 				});
 
+				return this;
+			},
+			'enter:transition': function() {
+				return this;
+			},
+
+			update: function() {
+				var chart = this.chart();
+				var zoneX = chart.getZoneX('ordinalXAxis');
+
+				this.each(function(avg){
+					this.linePath.removeSegments();
+
+					this.linePath.add(new paper.Point(zoneX.start, chart.yscale(avg)));
+					this.linePath.add(new paper.Point(zoneX.end, chart.yscale(avg)));
+
+					this.lineLabel.set({
+						point: [zoneX.start-3, chart.yscale(avg)+4],
+						content: avg
+					});
+				});
+
+				return this;
+			},
+			'update:transition': function() {
+				return this;
+			},
+
+			merge: function() {
 				paper.view.draw();
+
+				return this;
 			},
 			'merge:transition': function() {
 				return this;
@@ -32763,7 +32861,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	return paper;
 	};
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(60), __webpack_require__(30)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(58), __webpack_require__(30)))
 
 /***/ },
 /* 50 */
@@ -32973,107 +33071,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 58 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var numeral = __webpack_require__(70);
-
-	// numeral.zeroFormat('N/A');
-	// numeral.language('qunb', {
-	// 	delimiters: {
-	// 		thousands: ',',
-	// 		decimal: '.'
-	// 	},
-	// 	abbreviations: {
-	// 		thousand: 'k',
-	// 		million: 'm',
-	// 		billion: 'b',
-	// 		trillion: 't'
-	// 	}
-	// });
-	// numeral.language('qunb');
-
-	var formatMiniValue = function(value) {
-		var result = "0";
-		var exposant = 0;
-		var i = 1
-		if (value && typeof value !== 'undefined' && value !== 0) {
-			while (value < 1) {
-				value = value * 10;
-				exposant = exposant + 1;
-			}
-			value = "" + value;
-			value = value.substring(0, 3);
-			result = value + "e-" + exposant;
-		}
-		return result;
-	};
-
-	var ValueFormatter = function() {};
-
-	ValueFormatter.prototype.formatShort = function(value) {
-		var formatted = value;
-		var absValue = Math.abs(value);
-		if (absValue > 1000000000) {
-			formatted = numeral(value).format("0.[0]a");
-		} else if (absValue <= 1000000000 && absValue >= 1000) {
-			formatted = numeral(value).format("0.[0]a");
-		} else if (absValue <= 999 && value >= 100) {
-			formatted = numeral(value).format("0");
-		} else if (absValue <= 100 && absValue >= 10) {
-			formatted = numeral(value).format("0");
-		} else if (absValue <= 10 && absValue >= 1) {
-			formatted = numeral(value).format("0.[0]");
-		} else if (absValue < 1 && absValue >= 0.00001) {
-			formatted = numeral(value).format("0.[00]");
-		} else if (absValue < 0.00001 && absValue > 0) {
-			formatted = formatMiniValue(value); //numeral(value).format("0.[00000]");
-		} else if (absValue == 0) {
-			formatted = "";
-		}
-		return String(formatted);
-	};
-
-	ValueFormatter.prototype.formatPercent = function(value) {
-		if (value == 0) {
-			return '0';
-		} else {
-			return value != 100 ? '' : '100 %'
-		}
-	};
-
-	module.exports = new ValueFormatter();
-
-
-/***/ },
-/* 59 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(28);
-
-	var monthNameFormat = d3.time.format('%B');
-	var monthNameMediumFormat = d3.time.format('%b');
-	var monthNameSmallFormat = d3.time.format('%m');
-
-	var TimeFormatter = function() {};
-
-	TimeFormatter.formatMonth = function(date) {
-		// console.log('format long');
-		return monthNameFormat(date);
-	};
-
-	TimeFormatter.formatMonthMedium = function(date) {
-		return monthNameMediumFormat(date);
-	};
-
-	TimeFormatter.formatMonthShort = function(date) {
-		// console.log('format short');
-		return monthNameSmallFormat(date);
-	};
-
-	module.exports = new TimeFormatter();
-
-/***/ },
-/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -42269,6 +42266,107 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var numeral = __webpack_require__(70);
+
+	// numeral.zeroFormat('N/A');
+	// numeral.language('qunb', {
+	// 	delimiters: {
+	// 		thousands: ',',
+	// 		decimal: '.'
+	// 	},
+	// 	abbreviations: {
+	// 		thousand: 'k',
+	// 		million: 'm',
+	// 		billion: 'b',
+	// 		trillion: 't'
+	// 	}
+	// });
+	// numeral.language('qunb');
+
+	var formatMiniValue = function(value) {
+		var result = "0";
+		var exposant = 0;
+		var i = 1
+		if (value && typeof value !== 'undefined' && value !== 0) {
+			while (value < 1) {
+				value = value * 10;
+				exposant = exposant + 1;
+			}
+			value = "" + value;
+			value = value.substring(0, 3);
+			result = value + "e-" + exposant;
+		}
+		return result;
+	};
+
+	var ValueFormatter = function() {};
+
+	ValueFormatter.prototype.formatShort = function(value) {
+		var formatted = value;
+		var absValue = Math.abs(value);
+		if (absValue > 1000000000) {
+			formatted = numeral(value).format("0.[0]a");
+		} else if (absValue <= 1000000000 && absValue >= 1000) {
+			formatted = numeral(value).format("0.[0]a");
+		} else if (absValue <= 999 && value >= 100) {
+			formatted = numeral(value).format("0");
+		} else if (absValue <= 100 && absValue >= 10) {
+			formatted = numeral(value).format("0");
+		} else if (absValue <= 10 && absValue >= 1) {
+			formatted = numeral(value).format("0.[0]");
+		} else if (absValue < 1 && absValue >= 0.00001) {
+			formatted = numeral(value).format("0.[00]");
+		} else if (absValue < 0.00001 && absValue > 0) {
+			formatted = formatMiniValue(value); //numeral(value).format("0.[00000]");
+		} else if (absValue == 0) {
+			formatted = "";
+		}
+		return String(formatted);
+	};
+
+	ValueFormatter.prototype.formatPercent = function(value) {
+		if (value == 0) {
+			return '0';
+		} else {
+			return value != 100 ? '' : '100 %'
+		}
+	};
+
+	module.exports = new ValueFormatter();
+
+
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(29);
+
+	var monthNameFormat = d3.time.format('%B');
+	var monthNameMediumFormat = d3.time.format('%b');
+	var monthNameSmallFormat = d3.time.format('%m');
+
+	var TimeFormatter = function() {};
+
+	TimeFormatter.formatMonth = function(date) {
+		// console.log('format long');
+		return monthNameFormat(date);
+	};
+
+	TimeFormatter.formatMonthMedium = function(date) {
+		return monthNameMediumFormat(date);
+	};
+
+	TimeFormatter.formatMonthShort = function(date) {
+		// console.log('format short');
+		return monthNameSmallFormat(date);
+	};
+
+	module.exports = new TimeFormatter();
+
+/***/ },
 /* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -42380,7 +42478,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	@class OrdinalLegendLabelLayer
 	*/
 
-	var Formatter = __webpack_require__(17);
+	var Formatter = __webpack_require__(19);
 
 	var OrdinalLegendLabelLayer = {
 
