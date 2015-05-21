@@ -59,7 +59,7 @@ var CanvasBarRectangleLayer = {
 
 				this.xLabel = new paper.PointText({
 				    point: [chart.xscale(point.id)+(chart.xscale.rangeBand()/2), chart.yscale(0)+15],
-				    content: point.id,
+				    content: point.xAxis,
 				    fillColor: labelColor,
 				    justification : 'center'
 				});
@@ -89,8 +89,8 @@ var CanvasBarRectangleLayer = {
 				this.valueLabel.visible = true;
 
 				this.path.scale(
-					chart.xscale.rangeBand()/this.path.bounds.width, 
-					(chart.yscale(0) - chart.yscale(point.value))/this.path.bounds.height
+					chart.xscale.rangeBand()/this.path.bounds.width || 1, 
+					(chart.yscale(0) - chart.yscale(point.value))/this.path.bounds.height || 1
 				);
 
 				this.path.pivot = this.path.bounds.topLeft;
@@ -98,7 +98,7 @@ var CanvasBarRectangleLayer = {
 
 				this.xLabel.set({
 					point: [chart.xscale(point.id)+(chart.xscale.rangeBand()/2), chart.yscale(0)+15],
-				    content: point.id
+				    content: point.xAxis
 				});
 
 				this.valueLabel.set({

@@ -80,7 +80,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// Import infographies and charts
 	__webpack_require__(6);
-	__webpack_require__(4);
+	__webpack_require__(3);
 	__webpack_require__(7);
 	__webpack_require__(8);
 	__webpack_require__(9);
@@ -120,7 +120,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var ChartEngine = __webpack_require__(1);
-	var DatasetFactory = __webpack_require__(3);
+	var DatasetFactory = __webpack_require__(4);
 
 	var chartParams = {
 		anchorId: "#test",
@@ -132,470 +132,85 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	window.chart = ChartEngine.create(chartParams);
 
-	// var dataset = DatasetFactory.generateDataset('marimekko', 3, 2);
-
-	// var dataset = {
-	// 	lines: [{
-	// 		id: "Email",
-	// 		name: "Email",
-	// 		points: [{
-	// 			id: "nl1409",
-	// 			value: 8,
-	// 			x: "nl1409",
-	// 			name: "nl1409"
-	// 		}]
-	// 	}, {
-	// 		id: "Social",
-	// 		name: "Social",
-	// 		points: [{
-	// 			id: "redirect_disqus_com",
-	// 			value: 6,
-	// 			x: "redirect.disqus.com",
-	// 			name: "redirect.disqus.com"
-	// 		}, {
-	// 			id: "facebook_com",
-	// 			value: 11,
-	// 			x: "facebook.com",
-	// 			name: "facebook.com"
-	// 		}, {
-	// 			id: "reddit_com",
-	// 			value: 6,
-	// 			x: "reddit.com",
-	// 			name: "reddit.com",
-	// 			classes: ['highlight']
-	// 		}, {
-	// 			id: "l_facebook_com",
-	// 			value: 4,
-	// 			x: "l.facebook.com",
-	// 			name: "l.facebook.com"
-	// 		}]
-	// 	}, {
-	// 		id: "Referral",
-	// 		name: "Referral",
-	// 		points: [{
-	// 			id: "moodle_bucknell_edu",
-	// 			value: 50,
-	// 			x: "moodle.bucknell.edu",
-	// 			name: "moodle.bucknell.edu"
-	// 		}, {
-	// 			id: "google_de",
-	// 			value: 10,
-	// 			x: "google.de",
-	// 			name: "google.de"
-	// 		}, {
-	// 			id: "google_fr",
-	// 			value: 5,
-	// 			x: "google.fr",
-	// 			name: "google.fr"
-	// 		}]
-	// 	}, {
-	// 		id: "Direct",
-	// 		name: "Direct",
-	// 		points: [{
-	// 			id: "direct traffic",
-	// 			value: 98,
-	// 			x: "direct traffic",
-	// 			name: "direct traffic"
-	// 		}]
-	// 	}]
-	// };
-
 	var dataset = {
 		lines : [{
 			id: 'ventes',
 			name: 'Ventes',
 			points: [{
 				value: 603,
-				id: 'Sep-14'
+				id: '0',
+				xAxis: 'Sep-14'
 			},
 			{
 				value: 1076,
-				id: 'Oct-14'
+				id: '1',
+				xAxis : 'Oct-14'
 			},
 			{
 				value: 2907,
-				id: 'Nov-14'
+				id: '2',
+				xAxis : 'Nov-14'
 			},
 			{
 				value: 4459,
-				id: 'Dec-14'
+				id: '3',
+				xAxis : 'Dec-14'
 			}]
 		}]
 	}
-
-	// var dataset = {
-	// 	lines: [{
-	// 		id: "Email",
-	// 		name: "Email",
-	// 		points: [{
-	// 			id: "netvibesfr",
-	// 			value: 73,
-	// 			x: "netvibesfr",
-	// 			name: "netvibesfr"
-	// 		}, {
-	// 			id: "netvibesen",
-	// 			value: 35,
-	// 			x: "netvibesen",
-	// 			name: "netvibesen"
-	// 		}, {
-	// 			id: "UKHF mailing list",
-	// 			value: 5,
-	// 			x: "UKHF mailing list",
-	// 			name: "UKHF mailing list"
-	// 		}, {
-	// 			id: "other:ga:source",
-	// 			value: 108,
-	// 			x: "other:ga:source",
-	// 			name: "other:ga:source"
-	// 		}]
-	// 	}, {
-	// 		id: "(Other)",
-	// 		name: "(Other)",
-	// 		points: [{
-	// 			id: "other:ga:source",
-	// 			value: 15851,
-	// 			x: "other:ga:source",
-	// 			name: "other:ga:source"
-	// 		}, {
-	// 			id: "http:__www_netvibes_com_privatepage_1",
-	// 			value: 6516,
-	// 			x: "http://www.netvibes.com/privatepage/1",
-	// 			name: "http://www.netvibes.com/privatepage/1"
-	// 		}, {
-	// 			id: "http:__www_netvibes_com_privatepage_2",
-	// 			value: 1120,
-	// 			x: "http://www.netvibes.com/privatepage/2",
-	// 			name: "http://www.netvibes.com/privatepage/2"
-	// 		}, {
-	// 			id: "http:__www_netvibes_com_privatepage_1?utm_source=http%3A%2F%2Fwww_netvibes_com%2Fprivatepage%2F1&utm_medium=web&utm_campaign=framebusting",
-	// 			value: 859,
-	// 			x: "http://www.netvibes.com/privatepage/1?utm_source=http%3A%2F%2Fwww.netvibes.com%2Fprivatepage%2F1&utm_medium=web&utm_campaign=framebusting",
-	// 			name: "http://www.netvibes.com/privatepage/1?utm_source=http%3A%2F%2Fwww.netvibes.com%2Fprivatepage%2F1&utm_medium=web&utm_campaign=framebusting"
-	// 		}, {
-	// 			id: "http:__www_netvibes_com_",
-	// 			value: 561,
-	// 			x: "http://www.netvibes.com/",
-	// 			name: "http://www.netvibes.com/"
-	// 		}, {
-	// 			id: "http:__www_01net_com_services-en-ligne_netvibes-108037_utiliser_",
-	// 			value: 282,
-	// 			x: "http://www.01net.com/services-en-ligne/netvibes-108037/utiliser/",
-	// 			name: "http://www.01net.com/services-en-ligne/netvibes-108037/utiliser/"
-	// 		}, {
-	// 			id: "http:__uwa_netvibes_com_apps_Samples_Controls_Web_index_xhtml",
-	// 			value: 220,
-	// 			x: "http://uwa.netvibes.com/apps/Samples/Controls/Web/index.xhtml",
-	// 			name: "http://uwa.netvibes.com/apps/Samples/Controls/Web/index.xhtml"
-	// 		}, {
-	// 			id: "http:__www_netvibes_com_signin?from=home",
-	// 			value: 207,
-	// 			x: "http://www.netvibes.com/signin?from=home",
-	// 			name: "http://www.netvibes.com/signin?from=home"
-	// 		}, {
-	// 			id: "http:__www_netvibes_com_privatepage_1?utm_source=http%3A%2F%2Fwww_netvibes_com%2Fprivatepage%2F1%3Futm_source%3Dhttp%253A%252F%252Fwww_netvibes_com%252Fprivatepage%252F1%253Futm_source%253Dhttp%25253A%25252F%25252Fwww_netvibes_com%25252Fprivatepage%25252F1%2526utm_medium%253Dweb%2526utm_campaign%253Dframebusting%26utm_medium%3Dweb%26utm_campaign%3Dframebusting&utm_medium=web&utm_campaign=framebusting",
-	// 			value: 187,
-	// 			x: "http://www.netvibes.com/privatepage/1?utm_source=http%3A%2F%2Fwww.netvibes.com%2Fprivatepage%2F1%3Futm_source%3Dhttp%253A%252F%252Fwww.netvibes.com%252Fprivatepage%252F1%253Futm_source%253Dhttp%25253A%25252F%25252Fwww.netvibes.com%25252Fprivatepage%25252F1%2526utm_medium%253Dweb%2526utm_campaign%253Dframebusting%26utm_medium%3Dweb%26utm_campaign%3Dframebusting&utm_medium=web&utm_campaign=framebusting",
-	// 			name: "http://www.netvibes.com/privatepage/1?utm_source=http%3A%2F%2Fwww.netvibes.com%2Fprivatepage%2F1%3Futm_source%3Dhttp%253A%252F%252Fwww.netvibes.com%252Fprivatepage%252F1%253Futm_source%253Dhttp%25253A%25252F%25252Fwww.netvibes.com%25252Fprivatepage%25252F1%2526utm_medium%253Dweb%2526utm_campaign%253Dframebusting%26utm_medium%3Dweb%26utm_campaign%3Dframebusting&utm_medium=web&utm_campaign=framebusting"
-	// 		}]
-	// 	}, {
-	// 		id: "Social",
-	// 		name: "Social",
-	// 		points: [{
-	// 			id: "other:ga:source",
-	// 			value: 35792,
-	// 			x: "other:ga:source",
-	// 			name: "other:ga:source"
-	// 		}, {
-	// 			id: "blog_netvibes_com",
-	// 			value: 3953,
-	// 			x: "blog.netvibes.com",
-	// 			name: "blog.netvibes.com"
-	// 		}, {
-	// 			id: "eco_netvibes_com",
-	// 			value: 3242,
-	// 			x: "eco.netvibes.com",
-	// 			name: "eco.netvibes.com"
-	// 		}, {
-	// 			id: "faq_netvibes_com",
-	// 			value: 2824,
-	// 			x: "faq.netvibes.com",
-	// 			name: "faq.netvibes.com"
-	// 		}, {
-	// 			id: "mobile_netvibes_com",
-	// 			value: 1966,
-	// 			x: "mobile.netvibes.com",
-	// 			name: "mobile.netvibes.com"
-	// 		}, {
-	// 			id: "twitter",
-	// 			value: 1876,
-	// 			x: "twitter",
-	// 			name: "twitter"
-	// 		}, {
-	// 			id: "vip_netvibes_com",
-	// 			value: 1866,
-	// 			x: "vip.netvibes.com",
-	// 			name: "vip.netvibes.com"
-	// 		}, {
-	// 			id: "relais_weebly_com",
-	// 			value: 1467,
-	// 			x: "relais.weebly.com",
-	// 			name: "relais.weebly.com"
-	// 		}, {
-	// 			id: "matome_naver_jp",
-	// 			value: 1403,
-	// 			x: "matome.naver.jp",
-	// 			name: "matome.naver.jp"
-	// 		}]
-	// 	}, {
-	// 		id: "Referral",
-	// 		name: "Referral",
-	// 		points: [{
-	// 			id: "other:ga:source",
-	// 			value: 141824,
-	// 			x: "other:ga:source",
-	// 			name: "other:ga:source"
-	// 		}, {
-	// 			id: "feeds_feedburner_com",
-	// 			value: 20382,
-	// 			x: "feeds.feedburner.com",
-	// 			name: "feeds.feedburner.com"
-	// 		}, {
-	// 			id: "1_1_1_1",
-	// 			value: 4213,
-	// 			x: "1.1.1.1",
-	// 			name: "1.1.1.1"
-	// 		}, {
-	// 			id: "techsupportalert_com",
-	// 			value: 2387,
-	// 			x: "techsupportalert.com",
-	// 			name: "techsupportalert.com"
-	// 		}, {
-	// 			id: "kobayashi_dk",
-	// 			value: 2106,
-	// 			x: "kobayashi.dk",
-	// 			name: "kobayashi.dk"
-	// 		}, {
-	// 			id: "m_sp_sm_cn",
-	// 			value: 2083,
-	// 			x: "m.sp.sm.cn",
-	// 			name: "m.sp.sm.cn"
-	// 		}, {
-	// 			id: "192_168_33_1",
-	// 			value: 2034,
-	// 			x: "192.168.33.1",
-	// 			name: "192.168.33.1"
-	// 		}, {
-	// 			id: "trk-5_net",
-	// 			value: 1854,
-	// 			x: "trk-5.net",
-	// 			name: "trk-5.net"
-	// 		}, {
-	// 			id: "franceculture_fr",
-	// 			value: 1295,
-	// 			x: "franceculture.fr",
-	// 			name: "franceculture.fr"
-	// 		}]
-	// 	}]
-	// }
-
-
-	// var dataset = {
-	// 	lines: [{
-	// 		id: "Email",
-	// 		name: "Email",
-	// 		points: [{
-	// 			id: "netvibesfr",
-	// 			value: 73,
-	// 			x: "netvibesfr",
-	// 			name: "netvibesfr"
-	// 		}, {
-	// 			id: "netvibesen",
-	// 			value: 35,
-	// 			x: "netvibesen",
-	// 			name: "netvibesen"
-	// 		}, {
-	// 			id: "UKHF mailing list",
-	// 			value: 5,
-	// 			x: "UKHF mailing list",
-	// 			name: "UKHF mailing list"
-	// 		}]
-	// 	}, {
-	// 		id: "(Other)",
-	// 		name: "(Other)",
-	// 		points: [{
-	// 			id: "http:__www_netvibes_com_privatepage_1",
-	// 			value: 6516,
-	// 			x: "http://www.netvibes.com/privatepage/1",
-	// 			name: "http://www.netvibes.com/privatepage/1"
-	// 		}, {
-	// 			id: "http:__www_netvibes_com_privatepage_2",
-	// 			value: 1120,
-	// 			x: "http://www.netvibes.com/privatepage/2",
-	// 			name: "http://www.netvibes.com/privatepage/2"
-	// 		}, {
-	// 			id: "http:__www_netvibes_com_privatepage_1?utm_source=http%3A%2F%2Fwww_netvibes_com%2Fprivatepage%2F1&utm_medium=web&utm_campaign=framebusting",
-	// 			value: 859,
-	// 			x: "http://www.netvibes.com/privatepage/1?utm_source=http%3A%2F%2Fwww.netvibes.com%2Fprivatepage%2F1&utm_medium=web&utm_campaign=framebusting",
-	// 			name: "http://www.netvibes.com/privatepage/1?utm_source=http%3A%2F%2Fwww.netvibes.com%2Fprivatepage%2F1&utm_medium=web&utm_campaign=framebusting"
-	// 		}, {
-	// 			id: "http:__www_netvibes_com_",
-	// 			value: 561,
-	// 			x: "http://www.netvibes.com/",
-	// 			name: "http://www.netvibes.com/"
-	// 		}]
-	// 	}, {
-	// 		id: "Social",
-	// 		name: "Social",
-	// 		points: [{
-	// 			id: "blog_netvibes_com",
-	// 			value: 3953,
-	// 			x: "blog.netvibes.com",
-	// 			name: "blog.netvibes.com"
-	// 		}, {
-	// 			id: "eco_netvibes_com",
-	// 			value: 3242,
-	// 			x: "eco.netvibes.com",
-	// 			name: "eco.netvibes.com"
-	// 		}, {
-	// 			id: "faq_netvibes_com",
-	// 			value: 2824,
-	// 			x: "faq.netvibes.com",
-	// 			name: "faq.netvibes.com"
-	// 		}, {
-	// 			id: "mobile_netvibes_com",
-	// 			value: 1966,
-	// 			x: "mobile.netvibes.com",
-	// 			name: "mobile.netvibes.com"
-	// 		}]
-	// 	}, {
-	// 		id: "Referral",
-	// 		name: "Referral",
-	// 		points: [{
-	// 			id: "feeds_feedburner_com",
-	// 			value: 20382,
-	// 			x: "feeds.feedburner.com",
-	// 			name: "feeds.feedburner.com"
-	// 		}, {
-	// 			id: "1_1_1_1",
-	// 			value: 4213,
-	// 			x: "1.1.1.1",
-	// 			name: "1.1.1.1"
-	// 		}, {
-	// 			id: "techsupportalert_com",
-	// 			value: 2387,
-	// 			x: "techsupportalert.com",
-	// 			name: "techsupportalert.com"
-	// 		}]
-	// 	}]
-	// };
 
 	chart.draw(dataset);
 
 	dataset.lines[0].points.push({
 		value: null,
-		id: 'Jan-15'
+		id: '4',
+		xAxis : 'Jan-15'
 	});
+
+	chart.draw(dataset);
+
+	dataset.lines[0].points[4].value = "";
+
+	chart.draw(dataset);
+
+	dataset.lines[0].points[4].value = 0;
 
 	chart.draw(dataset);
 
 	dataset.lines[0].points[4].value = 6000;
 
-	dataset.lines[0].points = [
-		{
-			value: 603,
-			id: 'Sep-14'
-		},
-		{
-			value: 1076,
-			id: 'Oct-14'
-		},
-		{
-			value: 2907,
-			id: 'Nov-14'
-		}
-	]
-
 	chart.draw(dataset);
 
-	dataset.lines[0].points.push({
-		value: 1500,
-		id: 'Jan-15'
-	});
+	// dataset.lines[0].points = [
+	// 	{
+	// 		value: 603,
+	// 		id: '0',
+	// 		xAxis: 'Sep-14'
+	// 	},
+	// 	{
+	// 		value: 1076,
+	// 		id: '1',
+	// 		xAxis : 'Oct-14'
+	// 	},
+	// 	{
+	// 		value: 2907,
+	// 		id: '2',
+	// 		xAxis : 'Nov-14'
+	// 	}
+	// ]
 
-	chart.draw(dataset);
+	// chart.draw(dataset);
 
-	// setTimeout(function() {
-	// 	var dataset2 = DatasetFactory.generateDataset('marimekko', 4, 4);
-	// 	chart.draw(dataset2);
-	// }, 2000);
+	// dataset.lines[0].points.push({
+	// 	value: 1500,
+	// 	id : '3',
+	// 	xAxis: 'Dec-14'
+	// });
 
-	// var j = 0;
-	// for (var i = 0; i < 5; i++) {
-	// 	setTimeout(function() {
-	// 		j++;
-	// 		var dataset = DatasetFactory.generateDataset('marimekko', j, j);
-	// 		chart.draw(dataset);
-	// 	}, i * 2000);
-	// }
+	// chart.draw(dataset);
 
 /***/ },
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(28);
-
-	/* Util to generate datasets with random values */
-
-	var generateMarimekkoDataset = function(numLines, numPoints) {
-		var lines = [];
-		var lineIds = chance.unique(chance.state, numLines, {
-			full: true
-		});
-
-		for (var i = 0; i < numLines; i++) {
-
-			var pointsIds = chance.unique(chance.city, numPoints, {
-				full: true
-			});
-			var points = [];
-			for (var j = 0; j < numPoints; j++) {
-				var point = {
-					id: pointsIds[j],
-					name: pointsIds[j],
-					value: chance.floating({
-						min: 0,
-						max: 100
-					})
-				};
-				points.push(point);
-			}
-
-			var line = {
-				id: lineIds[i],
-				name: lineIds[i],
-				points: points
-			};
-			lines.push(line);
-		}
-
-		return {
-			lines: lines
-		}
-	};
-
-	exports.generateDataset = function(type, numLines, numPoints) {
-		switch (type) {
-			case 'marimekko':
-				return generateMarimekkoDataset(numLines, numPoints);
-				break;
-			default:
-				return generateMarimekkoDataset(numLines, numPoints);
-		}
-	};
-
-
-/***/ },
-/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -659,11 +274,67 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = PieBarEvol;
 
 /***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(46);
+
+	/* Util to generate datasets with random values */
+
+	var generateMarimekkoDataset = function(numLines, numPoints) {
+		var lines = [];
+		var lineIds = chance.unique(chance.state, numLines, {
+			full: true
+		});
+
+		for (var i = 0; i < numLines; i++) {
+
+			var pointsIds = chance.unique(chance.city, numPoints, {
+				full: true
+			});
+			var points = [];
+			for (var j = 0; j < numPoints; j++) {
+				var point = {
+					id: pointsIds[j],
+					name: pointsIds[j],
+					value: chance.floating({
+						min: 0,
+						max: 100
+					})
+				};
+				points.push(point);
+			}
+
+			var line = {
+				id: lineIds[i],
+				name: lineIds[i],
+				points: points
+			};
+			lines.push(line);
+		}
+
+		return {
+			lines: lines
+		}
+	};
+
+	exports.generateDataset = function(type, numLines, numPoints) {
+		switch (type) {
+			case 'marimekko':
+				return generateMarimekkoDataset(numLines, numPoints);
+				break;
+			default:
+				return generateMarimekkoDataset(numLines, numPoints);
+		}
+	};
+
+
+/***/ },
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// import d3 base
-	__webpack_require__(29);
+	__webpack_require__(28);
 
 	// extend with d3.chart
 	__webpack_require__(14);
@@ -741,9 +412,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var MarimekkoAdapter = __webpack_require__(16);
 
 	// Import layers
-	var MarimekkoRectangleLayer = __webpack_require__(32);
-	var MarimekkoHighlightLayer = __webpack_require__(33);
-	var MarimekkoLabelLayer = __webpack_require__(34);
+	var MarimekkoRectangleLayer = __webpack_require__(31);
+	var MarimekkoHighlightLayer = __webpack_require__(32);
+	var MarimekkoLabelLayer = __webpack_require__(33);
 
 	// Import subcharts
 	var QuantitativeAxisChart = __webpack_require__(17);
@@ -907,20 +578,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	var AbstractChart = __webpack_require__(12);
 
 	var OsAdapter = __webpack_require__(20);
-	var OsShapeLayer = __webpack_require__(42);
+	var OsShapeLayer = __webpack_require__(41);
 	var OsShapeDefinitions = __webpack_require__(61);
 	    
 	var PeopleMobileAdapter = __webpack_require__(21);
-	var PeopleMobileLayer = __webpack_require__(43);
+	var PeopleMobileLayer = __webpack_require__(42);
 	var PeopleMobileShapeDefinitions = __webpack_require__(62); // svg
 
 	var BrowserAdapter = __webpack_require__(22);
-	var BrowserShapeLayer = __webpack_require__(44);
+	var BrowserShapeLayer = __webpack_require__(43);
 	var BrowsersShapeDefinitions = __webpack_require__(63);
 
 	var ScreenAdapter = __webpack_require__(23);
-	var ScreenShapeLayer = __webpack_require__(45);
-	var ScreenLabelsLayer = __webpack_require__(46);
+	var ScreenShapeLayer = __webpack_require__(44);
+	var ScreenLabelsLayer = __webpack_require__(45);
 	var ScreenShapeDefinitions = __webpack_require__(64);
 
 	var ordinalScale = d3.scale.ordinal();
@@ -984,7 +655,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 	module.exports = IconChart;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ },
 /* 8 */
@@ -1017,9 +688,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var PieAdapter = __webpack_require__(24);
 
-	var PieSectorsLayer = __webpack_require__(35);
-	var PieLabelLayer = __webpack_require__(36);
-	var PieCenterLayer = __webpack_require__(37);
+	var PieSectorsLayer = __webpack_require__(34);
+	var PieLabelLayer = __webpack_require__(35);
+	var PieCenterLayer = __webpack_require__(36);
 
 	var arc = d3.svg.arc();
 	var pie = d3.layout.pie();
@@ -1110,8 +781,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var BarAdapter = __webpack_require__(25);
 
-	var BarRectangleLayer = __webpack_require__(38);
-	var BarLabelLayer = __webpack_require__(39);
+	var BarRectangleLayer = __webpack_require__(37);
+	var BarLabelLayer = __webpack_require__(38);
 
 	var OrdinalAxisChart = __webpack_require__(26);
 	var QuantitativeAxisChart = __webpack_require__(17);
@@ -1241,7 +912,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 	module.exports = HorizontalBarChart;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ },
 /* 10 */
@@ -1259,8 +930,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var BarAdapter = __webpack_require__(25);
 
-	var CanvasBarRectangleLayer = __webpack_require__(40);
-	var CanvasAvgLineLayer = __webpack_require__(41);
+	var CanvasBarRectangleLayer = __webpack_require__(39);
+	var CanvasAvgLineLayer = __webpack_require__(40);
 
 	//var OrdinalAxisChart = require('OrdinalAxisChart');
 	//var QuantitativeAxisChart = require('QuantitativeAxisChart');
@@ -1367,7 +1038,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 	module.exports = VerticalAvgBarChart;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ },
 /* 11 */
@@ -1381,7 +1052,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	*/
 
 	var AbstractChart = __webpack_require__(12);
-	var BigTextChartLayer = __webpack_require__(31);
+	var BigTextChartLayer = __webpack_require__(30);
 	var TextAdapter = __webpack_require__(27);
 
 	var ordinalScale = d3.scale.ordinal();
@@ -1411,7 +1082,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 	module.exports = BigTextChart;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ },
 /* 12 */
@@ -2050,7 +1721,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = AbstractChart;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30), __webpack_require__(58)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29), __webpack_require__(58)))
 
 /***/ },
 /* 13 */
@@ -3265,7 +2936,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = new MarimekkoAdapter();
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ },
 /* 17 */
@@ -3558,7 +3229,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = new OsAdapter();
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ },
 /* 21 */
@@ -3620,7 +3291,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = new PeopleMobileAdapter();
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ },
 /* 22 */
@@ -3686,7 +3357,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = new BrowserAdapter();
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ },
 /* 23 */
@@ -3763,7 +3434,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = new PieAdapter();
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ },
 /* 25 */
@@ -3776,7 +3447,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 @constructor
 	 @module ChartEngine
 	 */
-	__webpack_require__(29);
+	__webpack_require__(28);
 
 	var AbstractAdapter = __webpack_require__(55);
 
@@ -3917,12 +3588,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 28 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(47)(__webpack_require__(48))
-
-/***/ },
-/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;!function() {
@@ -13165,7 +12830,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}();
 
 /***/ },
-/* 30 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -18151,7 +17816,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(67)(module), (function() { return this; }())))
 
 /***/ },
-/* 31 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {/**
@@ -18239,10 +17904,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = TextLayer;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ },
-/* 32 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18370,7 +18035,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 33 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {/**
@@ -18464,10 +18129,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = MarimekkoHighlightLayer;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ },
-/* 34 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {/**
@@ -18645,10 +18310,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = MarimekkoLabelLayer;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ },
-/* 35 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18751,7 +18416,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = PieSectorsLayer;
 
 /***/ },
-/* 36 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {/**
@@ -18926,10 +18591,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = PieLabelLayer;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ },
-/* 37 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19021,7 +18686,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 38 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19130,7 +18795,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = BarRectangleLayer;
 
 /***/ },
-/* 39 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19217,7 +18882,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = BarLabelLayer;
 
 /***/ },
-/* 40 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19281,7 +18946,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 					this.xLabel = new paper.PointText({
 					    point: [chart.xscale(point.id)+(chart.xscale.rangeBand()/2), chart.yscale(0)+15],
-					    content: point.id,
+					    content: point.xAxis,
 					    fillColor: labelColor,
 					    justification : 'center'
 					});
@@ -19311,8 +18976,8 @@ return /******/ (function(modules) { // webpackBootstrap
 					this.valueLabel.visible = true;
 
 					this.path.scale(
-						chart.xscale.rangeBand()/this.path.bounds.width, 
-						(chart.yscale(0) - chart.yscale(point.value))/this.path.bounds.height
+						chart.xscale.rangeBand()/this.path.bounds.width || 1, 
+						(chart.yscale(0) - chart.yscale(point.value))/this.path.bounds.height || 1
 					);
 
 					this.path.pivot = this.path.bounds.topLeft;
@@ -19320,7 +18985,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 					this.xLabel.set({
 						point: [chart.xscale(point.id)+(chart.xscale.rangeBand()/2), chart.yscale(0)+15],
-					    content: point.id
+					    content: point.xAxis
 					});
 
 					this.valueLabel.set({
@@ -19379,7 +19044,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = CanvasBarRectangleLayer;
 
 /***/ },
-/* 41 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19484,7 +19149,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = CanvasAvgLineLayer;
 
 /***/ },
-/* 42 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {/**
@@ -19549,10 +19214,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = OsShapeLayer;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ },
-/* 43 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {/**
@@ -19750,10 +19415,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = PeopleMobileLayer;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ },
-/* 44 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(_) {/**
@@ -19816,10 +19481,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = BrowserShapeLayer;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ },
-/* 45 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19890,7 +19555,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = ScreenShapeLayer;
 
 /***/ },
-/* 46 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19952,6 +19617,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = ScreenLabelsLayer;
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(47)(__webpack_require__(48))
 
 /***/ },
 /* 47 */
@@ -32861,7 +32532,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	return paper;
 	};
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(58), __webpack_require__(30)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(58), __webpack_require__(29)))
 
 /***/ },
 /* 50 */
@@ -32930,7 +32601,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(30);
+	var _ = __webpack_require__(29);
 
 	var defaultColors = {
 		highlight: '#656298',
@@ -42342,7 +42013,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(29);
+	__webpack_require__(28);
 
 	var monthNameFormat = d3.time.format('%B');
 	var monthNameMediumFormat = d3.time.format('%b');
