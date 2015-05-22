@@ -40,13 +40,45 @@ var dataset = {
 
 chart.draw(dataset);
 
-dataset.lines[0].points.push({
-	value: null,
-	id: '4',
-	xAxis : 'Jan-15'
-});
+setTimeout(function () {
+	dataset = {
+		lines : [{
+			id: 'ventes',
+			name: 'Ventes',
+			points: [{
+				value: 1703,
+				id: '0',
+				xAxis: 'Sep-14'
+			},
+			{
+				value: 376,
+				id: '1',
+				xAxis : 'Oct-14'
+			},
+			{
+				value: 1007,
+				id: '2',
+				xAxis : 'Nov-14'
+			},
+			{
+				value: 4459,
+				id: '3',
+				xAxis : 'Dec-14'
+			}]
+		}]
+	}
 
-chart.draw(dataset);
+	console.log('Data Change');
+	chart.draw(dataset);
+}, 3000);
+
+// dataset.lines[0].points.push({
+// 	value: null,
+// 	id: '4',
+// 	xAxis : 'Jan-15'
+// });
+
+// chart.draw(dataset);
 
 // dataset.lines[0].points[4].value = "";
 
